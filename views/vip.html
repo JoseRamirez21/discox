@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Zona VIP — Disco X | Experiencia Premium Huanta</title>
+  <meta name="description" content="La Zona VIP de Disco X es el segundo piso más exclusivo de Huanta. Sofás premium, open bar, servicio personalizado, combos VIP y acceso prioritario."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/styles.css"/>
+  <style>
+    /* ── VIP EXTRA ────────────────────────────────────────────── */
+    .page-hero{min-height:70vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding-top:76px}
+    .ph-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(212,175,55,.09) 0%,transparent 65%),linear-gradient(180deg,rgba(3,3,3,.25) 0%,var(--bg-0) 100%)}
+    .ph-img{position:absolute;inset:0;z-index:0}
+    .ph-img img{width:100%;height:100%;object-fit:cover;opacity:.22;filter:saturate(.6)}
+    .ph-content{position:relative;z-index:2}
+    .breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--txt-3);margin-bottom:20px}
+    .breadcrumb a{color:var(--txt-3);transition:color var(--t1)}
+    .breadcrumb a:hover{color:var(--gold)}
+    .breadcrumb span{color:var(--gold)}
+    .ph-title{font-family:var(--font-display);font-size:clamp(42px,8vw,96px);font-weight:900;line-height:.9;letter-spacing:1px;text-transform:uppercase;color:var(--txt-1);margin-bottom:16px}
+    .ph-title .g{color:var(--gold);filter:drop-shadow(0 0 28px rgba(212,175,55,.4))}
+    .ph-sub{font-family:var(--font-serif);font-size:clamp(16px,2vw,21px);font-style:italic;color:var(--txt-2);font-weight:300;margin-bottom:36px}
+
+    /* VIP Hero extras */
+    .vip-hero-badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
+    .vhb{display:inline-flex;align-items:center;gap:8px;background:rgba(212,175,55,.08);border:1px solid var(--gold-border);border-radius:40px;padding:8px 18px;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);backdrop-filter:blur(10px)}
+
+    /* Intro VIP */
+    .vip-intro{display:grid;grid-template-columns:1fr 1fr;gap:68px;align-items:center}
+    .vip-intro-visual{position:relative;border-radius:var(--r-card);overflow:hidden;border:1px solid var(--gold-border);aspect-ratio:3/4}
+    .vip-intro-visual img{width:100%;height:100%;object-fit:cover;filter:brightness(.65);transition:filter var(--t3)}
+    .vip-intro-visual:hover img{filter:brightness(.85)}
+    .vip-overlay-badge{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(3,3,3,.88);border:1px solid rgba(212,175,55,.5);border-radius:var(--r-card);padding:16px 28px;text-align:center;backdrop-filter:blur(12px);white-space:nowrap}
+    .vob-n{font-family:var(--font-display);font-size:42px;font-weight:900;color:var(--gold);line-height:1;filter:drop-shadow(0 0 12px rgba(212,175,55,.4))}
+    .vob-l{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--txt-2);margin-top:4px;display:block}
+
+    /* Perks VIP grandes */
+    .vip-big-perks{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin:36px 0}
+    .vbp{display:flex;gap:16px;align-items:flex-start;padding:24px;border-radius:var(--r-card);background:var(--bg-2);border:1px solid var(--gold-border);transition:all var(--t2) var(--ease)}
+    .vbp:hover{transform:translateX(5px);border-color:rgba(212,175,55,.4);box-shadow:0 6px 28px rgba(0,0,0,.35)}
+    .vbp-ic{width:46px;height:46px;flex-shrink:0;border-radius:11px;background:var(--gold-dim);border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:19px;color:var(--gold);transition:background var(--t1)}
+    .vbp:hover .vbp-ic{background:rgba(212,175,55,.14)}
+    .vbp-tx h4{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--txt-1);letter-spacing:.5px;margin-bottom:4px}
+    .vbp-tx p{font-size:12.5px;color:var(--txt-2);line-height:1.6}
+
+    /* Combos VIP */
+    .vip-combos{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .vc-card{padding:32px 26px;border-radius:var(--r-card);background:var(--bg-2);border:1px solid var(--gold-border);position:relative;overflow:hidden;transition:all var(--t2) var(--ease);text-align:center}
+    .vc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+    .vc-card:hover{transform:translateY(-8px);box-shadow:0 14px 50px rgba(0,0,0,.5),0 0 36px rgba(212,175,55,.1);border-color:rgba(212,175,55,.4)}
+    .vc-card.top{border-color:var(--gold);box-shadow:0 0 24px rgba(212,175,55,.12)}
+    .vc-top-tag{position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--bg-0);font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 16px;border-radius:0 0 6px 6px}
+    .vc-tier{font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;margin-top:16px}
+    .vc-name{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--txt-1);letter-spacing:1px;margin-bottom:16px}
+    .vc-includes{list-style:none;margin-bottom:20px}
+    .vc-includes li{font-size:13px;color:var(--txt-2);padding:7px 0;border-bottom:1px solid rgba(212,175,55,.1);display:flex;align-items:center;gap:9px}
+    .vc-includes li i{color:var(--gold);font-size:11px;flex-shrink:0}
+    .vc-price{font-family:var(--font-display);font-size:36px;font-weight:900;color:var(--gold);filter:drop-shadow(0 0 8px rgba(212,175,55,.25));margin-bottom:6px}
+    .vc-price sup{font-size:.42em;vertical-align:super;font-weight:400}
+    .vc-price-note{font-size:11px;color:var(--txt-3);margin-bottom:20px}
+    .vc-persons{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt-2);margin-bottom:16px}
+
+    /* Zonas VIP */
+    .zones-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .zone-card{border-radius:var(--r-card);overflow:hidden;background:var(--bg-2);border:1px solid var(--gold-border);transition:transform var(--t2) var(--ease),box-shadow var(--t2)}
+    .zone-card:hover{transform:translateY(-7px);box-shadow:0 12px 44px rgba(0,0,0,.45),0 0 28px rgba(212,175,55,.08)}
+    .zone-img{aspect-ratio:16/10;overflow:hidden;position:relative}
+    .zone-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.62);transition:filter var(--t3),transform var(--t3)}
+    .zone-card:hover .zone-img img{filter:brightness(.85);transform:scale(1.05)}
+    .zone-tag{position:absolute;top:12px;left:12px;background:var(--gold);color:var(--bg-0);font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:3px}
+    .zone-cap-tag{position:absolute;bottom:12px;right:12px;background:rgba(3,3,3,.82);border:1px solid var(--gold-border);padding:4px 10px;border-radius:3px;font-size:9px;color:var(--gold);letter-spacing:1px}
+    .zone-body{padding:20px}
+    .zone-body h3{font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--txt-1);margin-bottom:7px;letter-spacing:.5px}
+    .zone-body p{font-size:12.5px;color:var(--txt-2);line-height:1.65}
+
+    /* Proceso reserva */
+    .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;position:relative}
+    .steps-grid::before{content:'';position:absolute;top:40px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.25),var(--gold),rgba(212,175,55,.25),transparent);z-index:0}
+    .step-item{text-align:center;position:relative;z-index:1}
+    .step-num{width:80px;height:80px;border-radius:50%;border:1.5px solid var(--gold);background:var(--bg-2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:var(--font-display);font-size:26px;font-weight:900;color:var(--gold);box-shadow:var(--gold-glow-sm);transition:all var(--t2) var(--ease)}
+    .step-item:hover .step-num{background:var(--gold);color:var(--bg-0);transform:scale(1.08)}
+    .step-name{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--txt-1);margin-bottom:6px;letter-spacing:.5px}
+    .step-desc{font-size:12px;color:var(--txt-2);line-height:1.6}
+
+    /* Reglas VIP */
+    .rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .rule-card{padding:22px 24px;border-radius:var(--r-card);background:var(--bg-2);border:1px solid var(--gold-border);display:flex;gap:14px;align-items:flex-start}
+    .rule-ic{font-size:20px;flex-shrink:0;margin-top:2px}
+    .rule-ic.ok{color:#5dde8c}
+    .rule-ic.no{color:#ff6b6b}
+    .rule-tx h4{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--txt-1);margin-bottom:4px;letter-spacing:.5px}
+    .rule-tx p{font-size:12px;color:var(--txt-2);line-height:1.6}
+
+    /* Form VIP */
+    .vip-form-wrap{max-width:680px;margin:0 auto}
+    .vf-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .vf-group{display:flex;flex-direction:column;gap:6px}
+    .vf-group.full{grid-column:span 2}
+    .vf-label{font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600}
+    .vf-input{background:var(--bg-3);border:1px solid var(--gold-border);border-radius:var(--r-btn);padding:13px 16px;font-size:13px;color:var(--txt-1);outline:none;transition:border-color var(--t1),box-shadow var(--t1);width:100%}
+    .vf-input::placeholder{color:var(--txt-3)}
+    .vf-input:focus{border-color:rgba(212,175,55,.5);box-shadow:0 0 0 3px rgba(212,175,55,.08)}
+    .vf-select{background:var(--bg-3);border:1px solid var(--gold-border);border-radius:var(--r-btn);padding:13px 16px;font-size:13px;color:var(--txt-1);outline:none;width:100%;cursor:none;appearance:none;transition:border-color var(--t1)}
+    .vf-select:focus{border-color:rgba(212,175,55,.5)}
+    .vf-select option{background:var(--bg-3);color:var(--txt-1)}
+    .vf-textarea{background:var(--bg-3);border:1px solid var(--gold-border);border-radius:var(--r-btn);padding:13px 16px;font-size:13px;color:var(--txt-1);outline:none;resize:vertical;width:100%;min-height:110px;transition:border-color var(--t1)}
+    .vf-textarea::placeholder{color:var(--txt-3)}
+    .vf-textarea:focus{border-color:rgba(212,175,55,.5)}
+
+    /* Testimonios VIP */
+    .vtesti-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+
+    /* Responsive */
+    @media(max-width:1024px){
+      .vip-intro{grid-template-columns:1fr;gap:44px}
+      .vip-combos{grid-template-columns:1fr 1fr}
+      .zones-grid{grid-template-columns:1fr 1fr}
+      .steps-grid{grid-template-columns:repeat(2,1fr)}
+      .steps-grid::before{display:none}
+      .rules-grid{grid-template-columns:1fr}
+      .vip-big-perks{grid-template-columns:1fr}
+    }
+    @media(max-width:768px){
+      .vip-combos{grid-template-columns:1fr}
+      .zones-grid{grid-template-columns:1fr}
+      .vf-grid{grid-template-columns:1fr}
+      .vf-group.full{grid-column:span 1}
+      .vtesti-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<div id="cx-dot"></div>
+<div id="cx-ring"></div>
+<div id="sp-bar"></div>
+<div id="noise"></div>
+<canvas id="px-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35"></canvas>
+
+<!-- AGE GATE -->
+<div id="age-gate">
+  <div class="ag-logo">X</div>
+  <h2>Verificación de Edad</h2>
+  <p>Disco X es un espacio exclusivo para mayores de 18 años.</p>
+  <div class="ag-btns">
+    <button id="ag-yes" class="btn btn-gold btn-lg">Tengo 18 o más</button>
+    <button id="ag-no"  class="btn btn-outline">Soy menor de edad</button>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="nav on" role="navigation">
+  <div class="nav-in">
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-emblem"><span>X</span></div>
+      <div><span class="nav-name">Disco X</span><span class="nav-sub">Huanta · Premium</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="eventos.html">Eventos</a>
+      <a href="galeria.html">Galería</a>
+      <a href="vip.html" class="active">VIP</a>
+      <a href="reservas.html" class="nav-cta">Reservar Mesa</a>
+    </div>
+    <button class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-menu">
+  <a href="../index.html">Inicio</a>
+  <a href="nosotros.html">Nosotros</a>
+  <a href="eventos.html">Eventos</a>
+  <a href="galeria.html">Galería</a>
+  <a href="vip.html">VIP</a>
+  <a href="reservas.html">Reservas</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="ph-img">
+    <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=1400&q=80" alt="Zona VIP Disco X"/>
+  </div>
+  <div class="ph-bg"></div>
+  <div class="hc hc-tl" style="position:absolute;top:28px;left:28px;"></div>
+  <div class="hc hc-tr" style="position:absolute;top:28px;right:28px;"></div>
+  <div class="hc hc-bl" style="position:absolute;bottom:28px;left:28px;"></div>
+  <div class="hc hc-br" style="position:absolute;bottom:28px;right:28px;"></div>
+  <div class="ph-content">
+    <div class="breadcrumb">
+      <a href="../index.html">Inicio</a>
+      <i class="fa-solid fa-chevron-right" style="font-size:7px;"></i>
+      <span>Zona VIP</span>
+    </div>
+    <h1 class="ph-title"><span class="g">VIP</span><br>Experience</h1>
+    <p class="ph-sub">Segundo piso exclusivo — donde la noche se vive diferente</p>
+    <div class="vip-hero-badges">
+      <span class="vhb"><i class="fa-solid fa-crown"></i>2do Piso Exclusivo</span>
+      <span class="vhb"><i class="fa-solid fa-champagne-glasses"></i>Open Bar Premium</span>
+      <span class="vhb"><i class="fa-solid fa-couch"></i>Sofás Privatizados</span>
+      <span class="vhb"><i class="fa-solid fa-concierge-bell"></i>Servicio Personalizado</span>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="#reservar-vip" class="btn btn-gold btn-lg"><i class="fa-solid fa-crown"></i>Reservar VIP Ahora</a>
+      <a href="#combos-vip"   class="btn btn-outline btn-lg"><i class="fa-solid fa-list"></i>Ver Combos VIP</a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" style="position:relative;z-index:2;">
+  <div class="ticker-track">
+    <span class="ticker-item"><i class="fa-solid fa-crown"></i>ZONA VIP — 2DO PISO EXCLUSIVO</span>
+    <span class="ticker-item"><i class="fa-solid fa-champagne-glasses"></i>OPEN BAR CON LICORES IMPORTADOS</span>
+    <span class="ticker-item"><i class="fa-solid fa-couch"></i>SOFÁS PREMIUM CON VISTA PANORÁMICA</span>
+    <span class="ticker-item"><i class="fa-solid fa-concierge-bell"></i>SERVICIO PERSONALIZADO TODA LA NOCHE</span>
+    <span class="ticker-item"><i class="fa-solid fa-door-open"></i>ACCESO PRIORITARIO SIN FILAS</span>
+    <span class="ticker-item"><i class="fa-solid fa-crown"></i>ZONA VIP — 2DO PISO EXCLUSIVO</span>
+    <span class="ticker-item"><i class="fa-solid fa-champagne-glasses"></i>OPEN BAR CON LICORES IMPORTADOS</span>
+    <span class="ticker-item"><i class="fa-solid fa-couch"></i>SOFÁS PREMIUM CON VISTA PANORÁMICA</span>
+    <span class="ticker-item"><i class="fa-solid fa-concierge-bell"></i>SERVICIO PERSONALIZADO TODA LA NOCHE</span>
+    <span class="ticker-item"><i class="fa-solid fa-door-open"></i>ACCESO PRIORITARIO SIN FILAS</span>
+  </div>
+</div>
+
+<!-- INTRO VIP -->
+<section class="sec" id="intro-vip">
+  <div class="cx">
+    <div class="vip-intro">
+      <div class="vip-intro-visual rv-l">
+        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=700&q=80" alt="Zona VIP Disco X 2do piso"/>
+        <div class="vip-overlay-badge">
+          <div class="vob-n">VIP</div>
+          <span class="vob-l">Solo para los mejores</span>
+        </div>
+      </div>
+      <div class="rv-r">
+        <span class="eyebrow">Solo Para Ti</span>
+        <h2 class="sec-title">No Es Una Mesa.<br>Es Un <span class="g">Mundo Aparte.</span></h2>
+        <div class="dv"><div class="dv-line"></div><div class="dv-gem"></div><div class="dv-line"></div></div>
+        <p style="font-size:14px;color:var(--txt-2);line-height:1.85;margin-bottom:16px;">La Zona VIP de Disco X no es simplemente un área reservada — es un segundo piso completo con su propio ambiente, su propio bar, su propio personal y su propia energía. Vista panorámica de 180° sobre la pista principal.</p>
+        <p style="font-size:14px;color:var(--txt-2);line-height:1.85;margin-bottom:24px;">Desde que llegas, el trato es diferente. Ingreso directo, anfitrión personal, carta de licores importados y el mejor ángulo de la noche. Esto es lo que significa el VIP en Disco X.</p>
+        <div class="vip-big-perks">
+          <div class="vbp">
+            <div class="vbp-ic"><i class="fa-solid fa-champagne-glasses"></i></div>
+            <div class="vbp-tx"><h4>Open Bar con Licores Importados</h4><p>Johnnie Walker, Absolut, Bacardí, Jäger y más. Tu mesa siempre bien surtida.</p></div>
+          </div>
+          <div class="vbp">
+            <div class="vbp-ic"><i class="fa-solid fa-couch"></i></div>
+            <div class="vbp-tx"><h4>Sofás &amp; Lounges Privatizados</h4><p>Mobiliario premium, espacio propio y ambiente exclusivo de lujo durante toda la noche.</p></div>
+          </div>
+          <div class="vbp">
+            <div class="vbp-ic"><i class="fa-solid fa-concierge-bell"></i></div>
+            <div class="vbp-tx"><h4>Anfitrión Personal Dedicado</h4><p>Un miembro del equipo VIP solo para tu grupo. Atención inmediata, sin esperas.</p></div>
+          </div>
+          <div class="vbp">
+            <div class="vbp-ic"><i class="fa-solid fa-door-open"></i></div>
+            <div class="vbp-tx"><h4>Acceso Prioritario Sin Filas</h4><p>Tu noche empieza cuando llegas. Ingreso directo al 2do piso, sin cola, sin esperas.</p></div>
+          </div>
+          <div class="vbp">
+            <div class="vbp-ic"><i class="fa-solid fa-eye"></i></div>
+            <div class="vbp-tx"><h4>Vista Panorámica 180°</h4><p>El mejor ángulo de la pista, el escenario y el show de luces. La vista que todos quieren.</p></div>
+          </div>
+          <div class="vbp">
+            <div class="vbp-ic"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="vbp-tx"><h4>Seguridad Reforzada VIP</h4><p>Acceso controlado exclusivo. Solo los invitados de tu mesa tienen acceso a tu zona.</p></div>
+          </div>
+        </div>
+        <a href="#reservar-vip" class="btn btn-gold btn-lg">
+          <i class="fa-solid fa-crown"></i>Reservar Mi Mesa VIP
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS VIP -->
+<section class="stats-sec">
+  <div class="cx">
+    <div class="stats-grid">
+      <div class="stat rv d1"><div class="stat-n"><span data-count="200">0</span><sup>+</sup></div><span class="stat-l">Capacidad VIP</span></div>
+      <div class="stat rv d2"><div class="stat-n">180<sup>°</sup></div><span class="stat-l">Vista Panorámica</span></div>
+      <div class="stat rv d3"><div class="stat-n"><span data-count="30">0</span><sup>+</sup></div><span class="stat-l">Licores Importados</span></div>
+      <div class="stat rv d4"><div class="stat-n"><span data-count="5">0</span></div><span class="stat-l">Zonas Privadas</span></div>
+      <div class="stat rv d5"><div class="stat-n">24<sup>/7</sup></div><span class="stat-l">Atención Dedicada</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMBOS VIP -->
+<section class="sec sec-dark" id="combos-vip">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Carta VIP</span>
+      <h2 class="sec-title">Combos &amp; Paquetes <span class="g">VIP</span></h2>
+      <p class="sec-sub">Paquetes diseñados para que tu grupo disfrute al máximo sin preocuparse por nada</p>
+    </div>
+    <div class="vip-combos">
+      <!-- Silver -->
+      <div class="vc-card rv d1">
+        <div class="vc-tier">Silver VIP</div>
+        <div class="vc-name">Paquete Silver</div>
+        <ul class="vc-includes">
+          <li><i class="fa-solid fa-check"></i>Mesa VIP reservada</li>
+          <li><i class="fa-solid fa-check"></i>1 Botella de ron o vodka</li>
+          <li><i class="fa-solid fa-check"></i>2 Jarras de cerveza</li>
+          <li><i class="fa-solid fa-check"></i>Mixers y hielo incluidos</li>
+          <li><i class="fa-solid fa-check"></i>Acceso prioritario</li>
+          <li><i class="fa-solid fa-check"></i>Hasta 6 personas</li>
+        </ul>
+        <div class="vc-persons"><i class="fa-solid fa-users"></i> Hasta 6 personas</div>
+        <div class="vc-price"><sup>S/</sup>180</div>
+        <div class="vc-price-note">por paquete / noche</div>
+        <a href="#reservar-vip" class="btn btn-outline" style="width:100%">Reservar Silver</a>
+      </div>
+
+      <!-- Gold — TOP -->
+      <div class="vc-card top rv d2">
+        <div class="vc-top-tag">MÁS POPULAR</div>
+        <div class="vc-tier" style="margin-top:28px;">Gold VIP</div>
+        <div class="vc-name">Paquete Gold</div>
+        <ul class="vc-includes">
+          <li><i class="fa-solid fa-check"></i>Mesa VIP premium reservada</li>
+          <li><i class="fa-solid fa-check"></i>1 Botella Johnnie Walker Red</li>
+          <li><i class="fa-solid fa-check"></i>1 Botella de vodka Absolut</li>
+          <li><i class="fa-solid fa-check"></i>3 Jarras de cerveza</li>
+          <li><i class="fa-solid fa-check"></i>Mixers, hielo y snacks</li>
+          <li><i class="fa-solid fa-check"></i>Anfitrión personal</li>
+          <li><i class="fa-solid fa-check"></i>Acceso prioritario VIP</li>
+          <li><i class="fa-solid fa-check"></i>Hasta 10 personas</li>
+        </ul>
+        <div class="vc-persons"><i class="fa-solid fa-users"></i> Hasta 10 personas</div>
+        <div class="vc-price"><sup>S/</sup>320</div>
+        <div class="vc-price-note">por paquete / noche</div>
+        <a href="#reservar-vip" class="btn btn-gold" style="width:100%">Reservar Gold</a>
+      </div>
+
+      <!-- Platinum -->
+      <div class="vc-card rv d3">
+        <div class="vc-tier">Platinum VIP</div>
+        <div class="vc-name">Paquete Platinum</div>
+        <ul class="vc-includes">
+          <li><i class="fa-solid fa-check"></i>Área privada completa</li>
+          <li><i class="fa-solid fa-check"></i>Johnnie Walker Black Label</li>
+          <li><i class="fa-solid fa-check"></i>2 Botellas premium a elección</li>
+          <li><i class="fa-solid fa-check"></i>5 Jarras de cerveza</li>
+          <li><i class="fa-solid fa-check"></i>Carta de tragos de autor</li>
+          <li><i class="fa-solid fa-check"></i>Anfitrión + mesero dedicado</li>
+          <li><i class="fa-solid fa-check"></i>Decoración personalizada</li>
+          <li><i class="fa-solid fa-check"></i>Fotógrafo VIP incluido</li>
+          <li><i class="fa-solid fa-check"></i>Hasta 20 personas</li>
+        </ul>
+        <div class="vc-persons"><i class="fa-solid fa-users"></i> Hasta 20 personas</div>
+        <div class="vc-price"><sup>S/</sup>580</div>
+        <div class="vc-price-note">por paquete / noche</div>
+        <a href="#reservar-vip" class="btn btn-outline" style="width:100%">Reservar Platinum</a>
+      </div>
+    </div>
+    <div class="rv" style="margin-top:20px;text-align:center;">
+      <p style="font-size:11px;color:var(--txt-3);letter-spacing:1px;">* Precios referenciales. Consulta disponibilidad vía WhatsApp al <a href="https://wa.me/51901267943" style="color:var(--gold);">901 267 943</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ZONAS VIP -->
+<section class="sec sec-darker" id="zonas">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">El 2do Piso</span>
+      <h2 class="sec-title">Nuestras <span class="g">Zonas VIP</span></h2>
+      <p class="sec-sub">Cada zona tiene su propio ambiente y experiencia única</p>
+    </div>
+    <div class="zones-grid">
+      <div class="zone-card rv d1">
+        <div class="zone-img">
+          <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=600&q=80" alt="Zona Lounge VIP"/>
+          <div class="zone-tag">Zona Lounge</div>
+          <div class="zone-cap-tag">Hasta 15 pax</div>
+        </div>
+        <div class="zone-body">
+          <h3>Lounge Central</h3>
+          <p>Sofás de cuero premium con vista directa al escenario. La zona más demandada del 2do piso. Ideal para grupos medianos.</p>
+        </div>
+      </div>
+      <div class="zone-card rv d2">
+        <div class="zone-img">
+          <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80" alt="Zona Privada VIP"/>
+          <div class="zone-tag">Zona Privada</div>
+          <div class="zone-cap-tag">Hasta 25 pax</div>
+        </div>
+        <div class="zone-body">
+          <h3>Área Privada Premium</h3>
+          <p>Espacio completamente cerrado con acceso exclusivo. Decoración personalizable. Perfecta para cumpleaños y celebraciones especiales.</p>
+        </div>
+      </div>
+      <div class="zone-card rv d3">
+        <div class="zone-img">
+          <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80" alt="Zona Panorámica VIP"/>
+          <div class="zone-tag">Zona Panorámica</div>
+          <div class="zone-cap-tag">Hasta 12 pax</div>
+        </div>
+        <div class="zone-body">
+          <h3>Balcón Panorámico</h3>
+          <p>La vista más espectacular de Disco X. Balcón abierto sobre la pista con vista 180°. Para quienes quieren verlo todo desde arriba.</p>
+        </div>
+      </div>
+      <div class="zone-card rv d1">
+        <div class="zone-img">
+          <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80" alt="Zona Cumpleaños"/>
+          <div class="zone-tag">Zona Cumpleaños</div>
+          <div class="zone-cap-tag">Hasta 30 pax</div>
+        </div>
+        <div class="zone-body">
+          <h3>Suite Cumpleaños</h3>
+          <p>Decoración temática incluida, pastel, sorpresa especial y la mejor atención para el festejado. La celebración perfecta.</p>
+        </div>
+      </div>
+      <div class="zone-card rv d2">
+        <div class="zone-img">
+          <img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=600&q=80" alt="Barra VIP"/>
+          <div class="zone-tag">Barra VIP</div>
+          <div class="zone-cap-tag">Servicio exclusivo</div>
+        </div>
+        <div class="zone-body">
+          <h3>Bar Exclusivo VIP</h3>
+          <p>Barra del 2do piso con más de 30 licores importados. Cocteles de autor y tragos premium sin mezclar con el bar general.</p>
+        </div>
+      </div>
+      <div class="zone-card rv d3">
+        <div class="zone-img">
+          <img src="https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=600&q=80" alt="Zona Empresarial"/>
+          <div class="zone-tag">Corporativo</div>
+          <div class="zone-cap-tag">Hasta 50 pax</div>
+        </div>
+        <div class="zone-body">
+          <h3>Evento Corporativo</h3>
+          <p>Reserva exclusiva de todo el 2do piso para eventos de empresa, lanzamientos o celebraciones corporativas con servicio full.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO DE RESERVA -->
+<section class="sec" id="proceso">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Rápido y Sencillo</span>
+      <h2 class="sec-title">¿Cómo <span class="g">Reservar</span> tu VIP?</h2>
+      <p class="sec-sub">En 4 simples pasos tu mesa VIP está confirmada</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-item rv d1">
+        <div class="step-num">1</div>
+        <div class="step-name">Elige Tu Paquete</div>
+        <p class="step-desc">Selecciona entre Silver, Gold o Platinum según el tamaño de tu grupo y lo que quieres vivir.</p>
+      </div>
+      <div class="step-item rv d2">
+        <div class="step-num">2</div>
+        <div class="step-name">Reserva Online o WA</div>
+        <p class="step-desc">Completa el formulario o escríbenos directamente al WhatsApp 901 267 943.</p>
+      </div>
+      <div class="step-item rv d3">
+        <div class="step-num">3</div>
+        <div class="step-name">Confirma con Adelanto</div>
+        <p class="step-desc">Realizas un adelanto para asegurar tu reserva. Te enviamos la confirmación de inmediato.</p>
+      </div>
+      <div class="step-item rv d4">
+        <div class="step-num">4</div>
+        <div class="step-name">Disfruta la Noche</div>
+        <p class="step-desc">Llegas, ingreso directo, tu anfitrión te espera y la noche comienza. Simple así.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGLAS VIP -->
+<section class="sec sec-dark" id="reglas">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Lo Que Debes Saber</span>
+      <h2 class="sec-title">Reglas de la <span class="g">Zona VIP</span></h2>
+    </div>
+    <div class="rules-grid">
+      <div class="rule-card rv d1">
+        <i class="fa-solid fa-circle-check rule-ic ok"></i>
+        <div class="rule-tx"><h4>Vestimenta Elegante Obligatoria</h4><p>El 2do piso requiere vestimenta formal o smart casual. Camisa o blazer para ellos. Vestido o conjunto elegante para ellas.</p></div>
+      </div>
+      <div class="rule-card rv d2">
+        <i class="fa-solid fa-circle-check rule-ic ok"></i>
+        <div class="rule-tx"><h4>Reserva Anticipada Requerida</h4><p>El acceso VIP es exclusivamente por reserva previa. No hay ingreso VIP sin confirmación. Reserva con 24h mínimo de anticipación.</p></div>
+      </div>
+      <div class="rule-card rv d3">
+        <i class="fa-solid fa-circle-xmark rule-ic no"></i>
+        <div class="rule-tx"><h4>No Se Permiten Bebidas Externas</h4><p>El 2do piso tiene su propia carta. No está permitido ingresar bebidas del bar general ni del exterior al área VIP.</p></div>
+      </div>
+      <div class="rule-card rv d4">
+        <i class="fa-solid fa-circle-xmark rule-ic no"></i>
+        <div class="rule-tx"><h4>Acceso Solo a Invitados Confirmados</h4><p>El área VIP es de acceso restringido. Solo las personas confirmadas en la reserva pueden acceder al 2do piso.</p></div>
+      </div>
+      <div class="rule-card rv d1">
+        <i class="fa-solid fa-circle-check rule-ic ok"></i>
+        <div class="rule-tx"><h4>Menores No Permitidos</h4><p>La edad mínima en toda la disco, incluida la zona VIP, es de 18 años. DNI obligatorio en el control de ingreso.</p></div>
+      </div>
+      <div class="rule-card rv d2">
+        <i class="fa-solid fa-circle-check rule-ic ok"></i>
+        <div class="rule-tx"><h4>Respeto Total en la Zona</h4><p>El ambiente VIP es exclusivo y tranquilo. Tolerancia cero a comportamientos inapropiados. La administración retira sin reembolso.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS VIP -->
+<section class="sec sec-darker" id="testimonios-vip">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Experiencias Reales</span>
+      <h2 class="sec-title">Clientes <span class="g">VIP</span> Hablan</h2>
+    </div>
+    <div class="vtesti-grid">
+      <div class="testi-card rv d1">
+        <div class="testi-q">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-txt">Reservé el Paquete Gold para mi cumpleaños y fue la mejor decisión. La anfitriona estuvo pendiente toda la noche, las botellas llegaban antes de que se terminaran y la vista desde el 2do piso era espectacular.</p>
+        <div class="testi-auth">
+          <div class="testi-av">M</div>
+          <div><h5>María Quintanilla</h5><span>Cumpleañera — Cliente Gold VIP</span></div>
+        </div>
+      </div>
+      <div class="testi-card rv d2">
+        <div class="testi-q">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-txt">Vine con socios de Lima y quedaron impresionados. El Paquete Platinum superó lo que esperaban de una disco de provincia. El servicio, la carta de licores y el ambiente son de primer nivel nacional. Volveremos.</p>
+        <div class="testi-auth">
+          <div class="testi-av">A</div>
+          <div><h5>Andrés Flores</h5><span>Evento Corporativo — Cliente Platinum</span></div>
+        </div>
+      </div>
+      <div class="testi-card rv d1">
+        <div class="testi-q">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-txt">La zona VIP de Disco X es real. No es solo poner una soga y cobrar más. Es un piso diferente, con diferente energía y diferente trato. Vale absolutamente cada sol del paquete Silver.</p>
+        <div class="testi-auth">
+          <div class="testi-av">L</div>
+          <div><h5>Luis Pacheco</h5><span>Cliente Frecuente — Silver VIP</span></div>
+        </div>
+      </div>
+      <div class="testi-card rv d2">
+        <div class="testi-q">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-txt">Celebré mi aniversario en la Suite Cumpleaños con el paquete Gold. Todo perfectamente coordinado, la decoración, las sorpresas, el fotógrafo. Mi pareja quedó sin palabras. ¡Gracias Disco X!</p>
+        <div class="testi-auth">
+          <div class="testi-av">C</div>
+          <div><h5>Carmen Huayta</h5><span>Aniversario — Cliente Gold VIP</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULARIO RESERVA VIP -->
+<section class="sec" id="reservar-vip">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Asegura Tu Espacio</span>
+      <h2 class="sec-title">Reserva Tu <span class="g">Mesa VIP</span></h2>
+      <p class="sec-sub">Completa el formulario y te confirmamos en menos de 2 horas</p>
+    </div>
+    <div class="vip-form-wrap rv">
+      <div style="background:var(--bg-2);border:1px solid var(--gold-border);border-radius:var(--r-card);padding:40px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);"></div>
+        <form id="vip-form" novalidate>
+          <div class="vf-grid">
+            <div class="vf-group">
+              <label class="vf-label" for="vf-nombre">Nombre Completo *</label>
+              <input type="text" id="vf-nombre" name="nombre" class="vf-input" placeholder="Tu nombre completo" required/>
+            </div>
+            <div class="vf-group">
+              <label class="vf-label" for="vf-tel">WhatsApp / Teléfono *</label>
+              <input type="tel" id="vf-tel" name="telefono" class="vf-input" placeholder="+51 XXX XXX XXX" required/>
+            </div>
+            <div class="vf-group">
+              <label class="vf-label" for="vf-email">Correo Electrónico</label>
+              <input type="email" id="vf-email" name="email" class="vf-input" placeholder="tu@correo.com"/>
+            </div>
+            <div class="vf-group">
+              <label class="vf-label" for="vf-fecha">Fecha del Evento *</label>
+              <input type="date" id="vf-fecha" name="fecha" class="vf-input" required/>
+            </div>
+            <div class="vf-group">
+              <label class="vf-label" for="vf-personas">Cantidad de Personas *</label>
+              <select id="vf-personas" name="personas" class="vf-select" required>
+                <option value="">Selecciona...</option>
+                <option value="2-6">2 a 6 personas (Silver)</option>
+                <option value="7-10">7 a 10 personas (Gold)</option>
+                <option value="11-20">11 a 20 personas (Platinum)</option>
+                <option value="20+">Más de 20 (Corporativo)</option>
+              </select>
+            </div>
+            <div class="vf-group">
+              <label class="vf-label" for="vf-paquete">Paquete de Interés *</label>
+              <select id="vf-paquete" name="paquete" class="vf-select" required>
+                <option value="">Selecciona...</option>
+                <option value="silver">Silver VIP — S/ 180</option>
+                <option value="gold">Gold VIP — S/ 320 ⭐ Más Popular</option>
+                <option value="platinum">Platinum VIP — S/ 580</option>
+                <option value="corporativo">Corporativo / Evento Privado</option>
+                <option value="cumpleanos">Suite Cumpleaños</option>
+                <option value="consultar">Quiero que me asesoren</option>
+              </select>
+            </div>
+            <div class="vf-group">
+              <label class="vf-label" for="vf-zona">Zona Preferida</label>
+              <select id="vf-zona" name="zona" class="vf-select">
+                <option value="">Sin preferencia</option>
+                <option value="lounge">Lounge Central</option>
+                <option value="privada">Área Privada Premium</option>
+                <option value="balcon">Balcón Panorámico</option>
+                <option value="cumple">Suite Cumpleaños</option>
+              </select>
+            </div>
+            <div class="vf-group">
+              <label class="vf-label" for="vf-ocasion">Ocasión</label>
+              <select id="vf-ocasion" name="ocasion" class="vf-select">
+                <option value="">Selecciona...</option>
+                <option value="cumple">Cumpleaños</option>
+                <option value="aniversario">Aniversario</option>
+                <option value="empresa">Evento de Empresa</option>
+                <option value="graduacion">Graduación</option>
+                <option value="despedida">Despedida de Soltero/a</option>
+                <option value="amigos">Noche con Amigos</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+            <div class="vf-group full">
+              <label class="vf-label" for="vf-obs">Observaciones o Solicitudes Especiales</label>
+              <textarea id="vf-obs" name="observaciones" class="vf-textarea" placeholder="Cuéntanos si tienes alguna solicitud especial: decoración, sorpresa, menú especial, etc."></textarea>
+            </div>
+          </div>
+          <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+            <button type="submit" class="btn btn-gold btn-lg" style="flex:1;min-width:200px;justify-content:center;">
+              <i class="fa-solid fa-crown"></i>Confirmar Reserva VIP
+            </button>
+            <a href="https://wa.me/51901267943?text=Hola,%20quiero%20reservar%20la%20zona%20VIP%20de%20Disco%20X" target="_blank" class="btn btn-ghost btn-lg" style="flex:1;min-width:200px;justify-content:center;">
+              <i class="fa-brands fa-whatsapp"></i>Reservar por WhatsApp
+            </a>
+          </div>
+          <p style="font-size:11px;color:var(--txt-3);margin-top:14px;text-align:center;letter-spacing:.5px;">
+            Te contactaremos en menos de 2 horas para confirmar disponibilidad y coordinar el adelanto. Reserva sujeta a disponibilidad.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="sec sec-dark" style="padding:70px 0;text-align:center;">
+  <div class="cx">
+    <div class="rv">
+      <span class="eyebrow" style="justify-content:center;">¿Tienes Dudas?</span>
+      <h2 class="sec-title" style="margin-bottom:14px;">Contáctanos <span class="g">Directamente</span></h2>
+      <p class="sec-sub" style="margin-bottom:36px;">Nuestro equipo VIP está disponible para asesorarte y encontrar el paquete perfecto para tu noche</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://wa.me/51901267943?text=Hola,%20quiero%20información%20sobre%20la%20Zona%20VIP" class="btn btn-gold btn-lg" target="_blank"><i class="fa-brands fa-whatsapp"></i>WhatsApp VIP</a>
+        <a href="reservas.html" class="btn btn-outline btn-lg"><i class="fa-solid fa-calendar-check"></i>Ver Todas las Reservas</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-glow"></div>
+  <div class="cx">
+    <div class="ft-main">
+      <div class="ft-brand">
+        <h3>DISCO X</h3>
+        <p>La experiencia nocturna más exclusiva de Huanta. 2 pisos, DJs nacionales, zona VIP y la mejor seguridad.</p>
+        <div class="ft-socials">
+          <a href="#" class="ft-soc"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://wa.me/51901267943" class="ft-soc"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="ft-col">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="../index.html">Inicio</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="eventos.html">Eventos</a></li>
+          <li><a href="galeria.html">Galería</a></li>
+          <li><a href="vip.html">Zona VIP</a></li>
+          <li><a href="reservas.html">Reservas</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Paquetes VIP</h4>
+        <ul>
+          <li><a href="#combos-vip">Silver VIP — S/ 180</a></li>
+          <li><a href="#combos-vip">Gold VIP — S/ 320</a></li>
+          <li><a href="#combos-vip">Platinum VIP — S/ 580</a></li>
+          <li><a href="#combos-vip">Corporativo</a></li>
+          <li><a href="#combos-vip">Suite Cumpleaños</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Contacto VIP</h4>
+        <p><i class="fa-brands fa-whatsapp" style="color:var(--gold);margin-right:8px;"></i>901 267 943</p>
+        <p><i class="fa-solid fa-clock" style="color:var(--gold);margin-right:8px;"></i>Vie–Dom: 10PM →</p>
+        <p><i class="fa-solid fa-location-dot" style="color:var(--gold);margin-right:8px;"></i>Jr. Lima Cdra. 3, Huanta</p>
+        <p style="margin-top:14px;font-size:11px;color:var(--txt-3);">+18 · Beber con responsabilidad</p>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <p>© 2025 Disco X · Huanta, Ayacucho · Todos los derechos reservados</p>
+      <p>Diseñado con <span style="color:var(--gold);">♦</span> Agencia Digital Premium</p>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp -->
+<div class="wa-float">
+  <div class="wa-tip">¿Reservas VIP? ¡Escríbenos! 👑</div>
+  <a href="https://wa.me/51901267943?text=Hola,%20quiero%20reservar%20VIP%20en%20Disco%20X" class="wa-btn" target="_blank" rel="noopener">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script>
+  // Formulario VIP con SweetAlert2
+  document.getElementById('vip-form')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const ok = DX.validate({
+      nombre:   'Nombre Completo',
+      telefono: 'WhatsApp / Teléfono',
+      fecha:    'Fecha del Evento',
+      personas: 'Cantidad de Personas',
+      paquete:  'Paquete de Interés'
+    });
+    if (!ok) return;
+
+    const nombre   = this.nombre.value;
+    const paquete  = this.paquete.options[this.paquete.selectedIndex].text;
+    const fecha    = this.fecha.value;
+    const personas = this.personas.options[this.personas.selectedIndex].text;
+
+    DX.success(
+      '¡Reserva VIP Recibida! 👑',
+      `<strong>${nombre}</strong>, recibimos tu solicitud para el <strong>${paquete}</strong>.<br><br>
+       Fecha: <strong>${fecha}</strong><br>
+       Grupo: <strong>${personas}</strong><br><br>
+       Te contactaremos en menos de 2 horas al número que proporcionaste para confirmar disponibilidad y coordinar el adelanto.<br><br>
+       <span style="color:#D4AF37;">¡Prepárate para la mejor noche de Huanta!</span>`
+    );
+    this.reset();
+  });
+</script>
+</body>
+</html>

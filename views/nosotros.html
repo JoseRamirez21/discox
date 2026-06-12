@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Nosotros — Disco X | Historia, Valores e Infraestructura</title>
+  <meta name="description" content="Conoce la historia de Disco X, la discoteca más exclusiva de Huanta. 2 pisos, seguridad premium, DJs nacionales y años de experiencia nocturna."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://discox.pe/views/nosotros.html"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/styles.css"/>
+  <style>
+    /* ── NOSOTROS EXTRA ───────────────────────────────────────── */
+    .page-hero{min-height:62vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding-top:76px}
+    .ph-bg{position:absolute;inset:0;background:radial-gradient(ellipse 75% 55% at 50% 50%,rgba(212,175,55,.07) 0%,transparent 65%),linear-gradient(180deg,rgba(3,3,3,.3) 0%,var(--bg-0) 100%)}
+    .ph-img{position:absolute;inset:0;z-index:0}
+    .ph-img img{width:100%;height:100%;object-fit:cover;opacity:.18;filter:saturate(.5)}
+    .ph-content{position:relative;z-index:2}
+    .breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--txt-3);margin-bottom:20px}
+    .breadcrumb a{color:var(--txt-3);transition:color var(--t1)}
+    .breadcrumb a:hover{color:var(--gold)}
+    .breadcrumb span{color:var(--gold)}
+    .ph-title{font-family:var(--font-display);font-size:clamp(42px,7vw,84px);font-weight:900;line-height:.95;letter-spacing:1px;text-transform:uppercase;color:var(--txt-1);margin-bottom:14px}
+    .ph-title .g{color:var(--gold);filter:drop-shadow(0 0 22px rgba(212,175,55,.3))}
+    .ph-sub{font-family:var(--font-serif);font-size:clamp(15px,2vw,20px);font-style:italic;color:var(--txt-2);font-weight:300}
+
+    /* Historia */
+    .hist-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+    .hist-img{position:relative;border-radius:var(--r-card);overflow:hidden;border:1px solid var(--gold-border)}
+    .hist-img img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(.68);transition:filter var(--t3)}
+    .hist-img:hover img{filter:brightness(.88)}
+    .hist-year{position:absolute;bottom:20px;left:20px;background:rgba(3,3,3,.88);border:1px solid rgba(212,175,55,.55);padding:10px 18px;border-radius:7px;font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--gold);backdrop-filter:blur(10px)}
+    .hist-text p{font-size:14px;color:var(--txt-2);line-height:1.85;margin-bottom:18px}
+    .hist-text p:last-child{margin-bottom:0}
+    .hist-highlight{border-left:2px solid var(--gold);padding-left:18px;font-family:var(--font-serif);font-size:18px;font-style:italic;color:var(--txt-1);margin:24px 0}
+
+    /* Timeline */
+    .tl{position:relative;max-width:860px;margin:0 auto}
+    .tl::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,var(--gold),var(--gold),transparent);transform:translateX(-50%);opacity:.28}
+    .tl-item{display:grid;grid-template-columns:1fr 56px 1fr;gap:0;margin-bottom:44px;align-items:center}
+    .tl-content{background:var(--bg-2);border:1px solid var(--gold-border);border-radius:var(--r-card);padding:22px 26px;position:relative;transition:transform var(--t2) var(--ease),box-shadow var(--t2)}
+    .tl-content:hover{transform:scale(1.02);box-shadow:0 8px 32px rgba(0,0,0,.45)}
+    .tl-content::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.3),transparent)}
+    .tl-item:nth-child(odd) .tl-content{grid-column:1;text-align:right}
+    .tl-item:nth-child(even) .tl-content{grid-column:3}
+    .tl-item:nth-child(odd) .tl-dot{grid-column:2;grid-row:1}
+    .tl-item:nth-child(even) .tl-dot{grid-column:2;grid-row:1}
+    .tl-item:nth-child(even) .tl-empty{grid-column:1;grid-row:1}
+    .tl-year{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;font-family:var(--font-sans);font-weight:600}
+    .tl-name{font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--txt-1);margin-bottom:7px}
+    .tl-desc{font-size:12.5px;color:var(--txt-2);line-height:1.65}
+    .tl-dot{display:flex;align-items:center;justify-content:center;z-index:2}
+    .tl-dot-in{width:13px;height:13px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(212,175,55,.14),var(--gold-glow-sm)}
+
+    /* Pisos */
+    .pisos-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+    .piso-card{border-radius:var(--r-card);overflow:hidden;border:1px solid var(--gold-border);background:var(--bg-2);transition:transform var(--t2) var(--ease),box-shadow var(--t2)}
+    .piso-card:hover{transform:translateY(-7px);box-shadow:0 14px 48px rgba(0,0,0,.5),0 0 32px rgba(212,175,55,.09)}
+    .piso-img{position:relative;aspect-ratio:16/9;overflow:hidden}
+    .piso-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.65);transition:filter var(--t3),transform var(--t3)}
+    .piso-card:hover .piso-img img{filter:brightness(.85);transform:scale(1.04)}
+    .piso-floor-tag{position:absolute;top:14px;left:14px;background:var(--gold);color:var(--bg-0);font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 13px;border-radius:4px}
+    .piso-cap{position:absolute;top:14px;right:14px;background:rgba(3,3,3,.82);border:1px solid var(--gold-border);backdrop-filter:blur(8px);padding:5px 12px;border-radius:4px;font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+    .piso-body{padding:24px}
+    .piso-body h3{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--txt-1);letter-spacing:1px;margin-bottom:9px}
+    .piso-body p{font-size:13px;color:var(--txt-2);line-height:1.7;margin-bottom:16px}
+    .piso-tags{display:flex;flex-wrap:wrap;gap:6px}
+    .piso-tag{font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--txt-2);padding:4px 10px;border-radius:3px}
+
+    /* Equipo */
+    .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+    .team-card{border-radius:var(--r-card);overflow:hidden;background:var(--bg-2);border:1px solid var(--gold-border);text-align:center;transition:transform var(--t2) var(--ease),box-shadow var(--t2)}
+    .team-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,0,0,.45)}
+    .team-img{position:relative;aspect-ratio:1/1;overflow:hidden}
+    .team-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.5) brightness(.72);transition:filter var(--t3)}
+    .team-card:hover .team-img img{filter:grayscale(0) brightness(.9)}
+    .team-img-ph{width:100%;height:100%;background:linear-gradient(160deg,var(--bg-4),var(--bg-2));display:flex;align-items:center;justify-content:center;font-size:52px;color:rgba(212,175,55,.12)}
+    .team-body{padding:18px}
+    .team-role{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+    .team-name{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--txt-1);margin-bottom:6px}
+    .team-desc{font-size:11.5px;color:var(--txt-2);line-height:1.55}
+
+    /* MVV */
+    .mvv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .mvv-card{padding:36px 28px;border-radius:var(--r-card);background:var(--bg-2);border:1px solid var(--gold-border);text-align:center;position:relative;overflow:hidden;transition:transform var(--t2) var(--ease),box-shadow var(--t2)}
+    .mvv-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+    .mvv-card:hover{transform:translateY(-8px);box-shadow:0 14px 48px rgba(0,0,0,.45),0 0 32px rgba(212,175,55,.07)}
+    .mvv-icon{font-size:38px;color:var(--gold);margin-bottom:18px;display:block;filter:drop-shadow(0 0 9px rgba(212,175,55,.28))}
+    .mvv-card h3{font-family:var(--font-display);font-size:17px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--txt-1);margin-bottom:12px}
+    .mvv-card p{font-family:var(--font-serif);font-size:16px;font-style:italic;color:var(--txt-2);line-height:1.72;font-weight:300}
+
+    /* Valores */
+    .valores-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .val-item{padding:26px 20px;border-radius:var(--r-card);background:rgba(212,175,55,.025);border:1px solid var(--gold-border);text-align:center;transition:all var(--t2) var(--ease)}
+    .val-item:hover{background:rgba(212,175,55,.06);transform:translateY(-4px)}
+    .val-icon{font-size:28px;color:var(--gold);margin-bottom:11px;filter:drop-shadow(0 0 6px rgba(212,175,55,.25))}
+    .val-item h4{font-family:var(--font-display);font-size:12.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--txt-1);margin-bottom:7px}
+    .val-item p{font-size:12px;color:var(--txt-2);line-height:1.6}
+
+    /* Diferenciadores */
+    .diff-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .diff-item{display:flex;gap:18px;align-items:flex-start;padding:26px;border-radius:var(--r-card);background:var(--bg-2);border:1px solid var(--gold-border);transition:all var(--t2) var(--ease)}
+    .diff-item:hover{transform:translateX(6px);border-color:rgba(212,175,55,.4);box-shadow:0 6px 28px rgba(0,0,0,.35)}
+    .diff-ic{width:48px;height:48px;flex-shrink:0;border-radius:11px;background:var(--gold-dim);border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--gold);transition:background var(--t1)}
+    .diff-item:hover .diff-ic{background:rgba(212,175,55,.14)}
+    .diff-tx h4{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--txt-1);letter-spacing:.5px;margin-bottom:5px}
+    .diff-tx p{font-size:12.5px;color:var(--txt-2);line-height:1.62}
+
+    /* Awards */
+    .awards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .award-card{padding:30px;border-radius:var(--r-card);background:var(--bg-2);border:1px solid var(--gold-border);text-align:center;transition:all var(--t2) var(--ease)}
+    .award-card:hover{transform:translateY(-5px);box-shadow:0 10px 36px rgba(0,0,0,.4),0 0 24px rgba(212,175,55,.08)}
+    .award-icon{font-size:40px;color:var(--gold);margin-bottom:14px;filter:drop-shadow(0 0 10px rgba(212,175,55,.3))}
+    .award-year{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+    .award-name{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--txt-1);margin-bottom:8px}
+    .award-desc{font-size:12px;color:var(--txt-2);line-height:1.6}
+
+    /* Responsive extras */
+    @media(max-width:1024px){
+      .hist-grid{grid-template-columns:1fr;gap:40px}
+      .pisos-grid{grid-template-columns:1fr}
+      .team-grid{grid-template-columns:repeat(2,1fr)}
+      .mvv-grid{grid-template-columns:1fr}
+      .valores-grid{grid-template-columns:repeat(2,1fr)}
+      .diff-grid{grid-template-columns:1fr}
+      .awards-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:768px){
+      .tl::before{left:22px}
+      .tl-item{grid-template-columns:44px 1fr;gap:0}
+      .tl-item:nth-child(odd) .tl-content,.tl-item:nth-child(even) .tl-content{grid-column:2;text-align:left}
+      .tl-item:nth-child(odd) .tl-dot,.tl-item:nth-child(even) .tl-dot{grid-column:1}
+      .tl-item:nth-child(even) .tl-empty{display:none}
+      .team-grid{grid-template-columns:1fr 1fr}
+      .awards-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:480px){
+      .valores-grid{grid-template-columns:1fr 1fr}
+      .team-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<div id="cx-dot"></div>
+<div id="cx-ring"></div>
+<div id="sp-bar"></div>
+<div id="noise"></div>
+<canvas id="px-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35"></canvas>
+
+<!-- ── AGE GATE ──────────────────────────────────────────────── -->
+<div id="age-gate">
+  <div class="ag-logo">X</div>
+  <h2>Verificación de Edad</h2>
+  <p>Disco X es un espacio exclusivo para mayores de 18 años.</p>
+  <div class="ag-btns">
+    <button id="ag-yes" class="btn btn-gold btn-lg">Tengo 18 o más</button>
+    <button id="ag-no"  class="btn btn-outline">Soy menor de edad</button>
+  </div>
+</div>
+
+<!-- ── NAVBAR ────────────────────────────────────────────────── -->
+<nav class="nav scrolled on" role="navigation">
+  <div class="nav-in">
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-emblem"><span>X</span></div>
+      <div>
+        <span class="nav-name">Disco X</span>
+        <span class="nav-sub">Huanta · Premium</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="nosotros.html" class="active">Nosotros</a>
+      <a href="eventos.html">Eventos</a>
+      <a href="galeria.html">Galería</a>
+      <a href="vip.html">VIP</a>
+      <a href="reservas.html" class="nav-cta">Reservar Mesa</a>
+    </div>
+    <button class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-menu">
+  <a href="../index.html">Inicio</a>
+  <a href="nosotros.html">Nosotros</a>
+  <a href="eventos.html">Eventos</a>
+  <a href="galeria.html">Galería</a>
+  <a href="vip.html">VIP</a>
+  <a href="reservas.html">Reservas</a>
+</div>
+
+<!-- ── PAGE HERO ─────────────────────────────────────────────── -->
+<section class="page-hero">
+  <div class="ph-img">
+    <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1400&q=80" alt="Disco X interior"/>
+  </div>
+  <div class="ph-bg"></div>
+  <div class="hc hc-tl" style="position:absolute;top:28px;left:28px;"></div>
+  <div class="hc hc-tr" style="position:absolute;top:28px;right:28px;"></div>
+  <div class="ph-content">
+    <div class="breadcrumb">
+      <a href="../index.html">Inicio</a>
+      <i class="fa-solid fa-chevron-right" style="font-size:7px;"></i>
+      <span>Nosotros</span>
+    </div>
+    <h1 class="ph-title">Quiénes <span class="g">Somos</span></h1>
+    <p class="ph-sub">Más de 8 años creando las mejores noches de Huanta</p>
+  </div>
+</section>
+
+<!-- ── TICKER ────────────────────────────────────────────────── -->
+<div class="ticker-wrap" style="position:relative;z-index:2;">
+  <div class="ticker-track">
+    <span class="ticker-item"><i class="fa-solid fa-star"></i>LA DISCO MÁS EXCLUSIVA DE HUANTA</span>
+    <span class="ticker-item"><i class="fa-solid fa-building"></i>2 PISOS DE PURA ADRENALINA</span>
+    <span class="ticker-item"><i class="fa-solid fa-shield-halved"></i>LA MEJOR SEGURIDAD DE LA REGIÓN</span>
+    <span class="ticker-item"><i class="fa-solid fa-music"></i>DJS NACIONALES CADA FIN DE SEMANA</span>
+    <span class="ticker-item"><i class="fa-solid fa-champagne-glasses"></i>RESERVA: 901 267 943</span>
+    <span class="ticker-item"><i class="fa-solid fa-star"></i>LA DISCO MÁS EXCLUSIVA DE HUANTA</span>
+    <span class="ticker-item"><i class="fa-solid fa-building"></i>2 PISOS DE PURA ADRENALINA</span>
+    <span class="ticker-item"><i class="fa-solid fa-shield-halved"></i>LA MEJOR SEGURIDAD DE LA REGIÓN</span>
+    <span class="ticker-item"><i class="fa-solid fa-music"></i>DJS NACIONALES CADA FIN DE SEMANA</span>
+    <span class="ticker-item"><i class="fa-solid fa-champagne-glasses"></i>RESERVA: 901 267 943</span>
+  </div>
+</div>
+
+<!-- ── HISTORIA ───────────────────────────────────────────────── -->
+<section class="sec" id="historia">
+  <div class="cx">
+    <div class="hist-grid">
+      <div class="rv-l">
+        <span class="eyebrow">Nuestros Orígenes</span>
+        <h2 class="sec-title">Una Historia de <span class="g">Pasión</span></h2>
+        <div class="dv"><div class="dv-line"></div><div class="dv-gem"></div><div class="dv-line"></div></div>
+        <div class="hist-text">
+          <p>Disco X nació de una visión audaz: traer a Huanta una experiencia nocturna que compitiera con las mejores discotecas del país. Desde nuestros primeros días, supimos que no queríamos ser una disco más — queríamos ser <em>la</em> disco.</p>
+          <div class="hist-highlight">"Huanta merece lo mejor. Desde el primer día, esa fue nuestra única regla."</div>
+          <p>Empezamos con un solo piso, mucha música y aún más pasión. Con el paso de los años fuimos invirtiendo en cada detalle: sistema de sonido profesional, iluminación inteligente, el mejor equipo humano y una zona VIP que no tiene comparación en la región.</p>
+          <p>Hoy, Disco X tiene 2 pisos completos, capacidad para más de 500 personas, DJs nacionales en nuestro escenario cada fin de semana y una reputación ganada noche a noche. Somos el referente de la vida nocturna en Huanta y en toda la región de Ayacucho.</p>
+        </div>
+        <a href="reservas.html" class="btn btn-gold" style="margin-top:28px;">
+          <i class="fa-solid fa-champagne-glasses"></i>Reservar Ahora
+        </a>
+      </div>
+      <div class="hist-img rv-r">
+        <img src="https://images.unsplash.com/photo-1571266028243-e8a7270ed42c?w=700&q=80" alt="Historia Disco X"/>
+        <div class="hist-year">Desde 2016</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TIMELINE ───────────────────────────────────────────────── -->
+<section class="sec sec-dark" id="timeline">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Nuestra Evolución</span>
+      <h2 class="sec-title">Línea del <span class="g">Tiempo</span></h2>
+      <p class="sec-sub">Cada año, un nuevo capítulo de nuestra historia</p>
+    </div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-content rv-l">
+          <div class="tl-year">2016</div>
+          <h3 class="tl-name">Los Cimientos</h3>
+          <p class="tl-desc">Apertura oficial de Disco X con capacidad para 200 personas. Una apuesta que revolucionó la noche huantina desde el día uno.</p>
+        </div>
+        <div class="tl-dot"><div class="tl-dot-in"></div></div>
+        <div class="tl-empty"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-empty"></div>
+        <div class="tl-dot"><div class="tl-dot-in"></div></div>
+        <div class="tl-content rv-r">
+          <div class="tl-year">2017</div>
+          <h3 class="tl-name">Primer DJ Nacional</h3>
+          <p class="tl-desc">Logramos traer por primera vez a un DJ de nivel nacional a Huanta. La noche fue histórica y agotamos capacidad.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content rv-l">
+          <div class="tl-year">2018</div>
+          <h3 class="tl-name">Zona VIP — 2do Piso</h3>
+          <p class="tl-desc">Inauguramos la Zona VIP en el segundo piso. Sofás premium, servicio exclusivo y la mejor vista de la pista. Un antes y un después.</p>
+        </div>
+        <div class="tl-dot"><div class="tl-dot-in"></div></div>
+        <div class="tl-empty"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-empty"></div>
+        <div class="tl-dot"><div class="tl-dot-in"></div></div>
+        <div class="tl-content rv-r">
+          <div class="tl-year">2020</div>
+          <h3 class="tl-name">Renovación Total</h3>
+          <p class="tl-desc">Inversión total en tecnología: sistema de sonido JBL profesional, iluminación inteligente con 200+ fixtures y pista de baile LED.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content rv-l">
+          <div class="tl-year">2022</div>
+          <h3 class="tl-name">500 Personas de Capacidad</h3>
+          <p class="tl-desc">Ampliación al máximo. Nuevo escenario para artistas, sistema de seguridad con 32 cámaras y estacionamiento privado.</p>
+        </div>
+        <div class="tl-dot"><div class="tl-dot-in"></div></div>
+        <div class="tl-empty"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-empty"></div>
+        <div class="tl-dot"><div class="tl-dot-in"></div></div>
+        <div class="tl-content rv-r">
+          <div class="tl-year">2023</div>
+          <h3 class="tl-name">Programa de Membresías</h3>
+          <p class="tl-desc">Lanzamiento del programa VIP con beneficios exclusivos, acceso prioritario y descuentos permanentes para clientes fieles.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-content rv-l">
+          <div class="tl-year">2025</div>
+          <h3 class="tl-name">Era Premium — Rebranding</h3>
+          <p class="tl-desc">Nueva imagen, nueva web, nuevas experiencias. Disco X consolida su posición como la discoteca de referencia de Huanta y Ayacucho.</p>
+        </div>
+        <div class="tl-dot"><div class="tl-dot-in"></div></div>
+        <div class="tl-empty"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ─────────────────────────────────────────────────── -->
+<section class="stats-sec">
+  <div class="cx">
+    <div class="stats-grid">
+      <div class="stat rv d1"><div class="stat-n"><span data-count="9">0</span><sup>+</sup></div><span class="stat-l">Años de Experiencia</span></div>
+      <div class="stat rv d2"><div class="stat-n"><span data-count="2">0</span></div><span class="stat-l">Pisos Completos</span></div>
+      <div class="stat rv d3"><div class="stat-n"><span data-count="500">0</span><sup>+</sup></div><span class="stat-l">Capacidad Total</span></div>
+      <div class="stat rv d4"><div class="stat-n"><span data-count="32">0</span></div><span class="stat-l">Cámaras de Seguridad</span></div>
+      <div class="stat rv d5"><div class="stat-n"><span data-count="150">0</span><sup>+</sup></div><span class="stat-l">Eventos Realizados</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MISIÓN / VISIÓN / VALORES ──────────────────────────────── -->
+<section class="sec sec-darker" id="mision">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Nuestra Esencia</span>
+      <h2 class="sec-title">Misión, Visión &amp; <span class="g">Valores</span></h2>
+    </div>
+    <div class="mvv-grid">
+      <div class="mvv-card rv d1">
+        <span class="mvv-icon"><i class="fa-solid fa-bullseye-arrow"></i></span>
+        <h3>Misión</h3>
+        <p>Ofrecer la experiencia de entretenimiento nocturno más exclusiva y memorable de Huanta, superando siempre las expectativas con servicio impecable, música de primer nivel y un ambiente de lujo inigualable.</p>
+      </div>
+      <div class="mvv-card rv d2">
+        <span class="mvv-icon"><i class="fa-solid fa-eye"></i></span>
+        <h3>Visión</h3>
+        <p>Ser reconocidos como la discoteca de referencia del sur del Perú, expandiendo el estándar de vida nocturna premium a toda la región de Ayacucho y posicionando a Huanta en el mapa nocturno nacional.</p>
+      </div>
+      <div class="mvv-card rv d3">
+        <span class="mvv-icon"><i class="fa-solid fa-gem"></i></span>
+        <h3>Valores</h3>
+        <p>Excelencia en cada detalle. Compromiso con la seguridad. Respeto absoluto por cada cliente. Innovación constante. Pasión genuina por crear momentos únicos que duren toda la vida en la memoria.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── VALORES DETALLADOS ─────────────────────────────────────── -->
+<section class="sec" id="valores">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Lo Que Nos Define</span>
+      <h2 class="sec-title">Nuestros <span class="g">Pilares</span></h2>
+    </div>
+    <div class="valores-grid">
+      <div class="val-item rv d1"><div class="val-icon"><i class="fa-solid fa-crown"></i></div><h4>Exclusividad</h4><p>Cada detalle diseñado para ofrecer una experiencia que no encontrarás en ningún otro lugar de la región.</p></div>
+      <div class="val-item rv d2"><div class="val-icon"><i class="fa-solid fa-shield-halved"></i></div><h4>Seguridad</h4><p>Tu bienestar es nuestra prioridad número uno. Protocolos de primer nivel, personal capacitado y tecnología.</p></div>
+      <div class="val-item rv d3"><div class="val-icon"><i class="fa-solid fa-music"></i></div><h4>Música</h4><p>Los mejores DJs y artistas con equipos de sonido profesional que hacen vibrar cada centímetro del local.</p></div>
+      <div class="val-item rv d4"><div class="val-icon"><i class="fa-solid fa-star"></i></div><h4>Servicio</h4><p>Atención personalizada y profesional. Cada cliente es tratado con la distinción que merece siempre.</p></div>
+      <div class="val-item rv d1"><div class="val-icon"><i class="fa-solid fa-rocket"></i></div><h4>Innovación</h4><p>Siempre a la vanguardia. Tecnología, diseño y tendencias que mantienen a Disco X en la cima.</p></div>
+      <div class="val-item rv d2"><div class="val-icon"><i class="fa-solid fa-heart"></i></div><h4>Pasión</h4><p>Todo nace del amor genuino por crear experiencias que transformen una noche ordinaria en algo extraordinario.</p></div>
+      <div class="val-item rv d3"><div class="val-icon"><i class="fa-solid fa-handshake"></i></div><h4>Compromiso</h4><p>Cumplimos lo que prometemos. Tu satisfacción y la de todos nuestros clientes es nuestro mayor logro.</p></div>
+      <div class="val-item rv d4"><div class="val-icon"><i class="fa-solid fa-users"></i></div><h4>Comunidad</h4><p>Más que una disco, somos el punto de encuentro donde se construyen amistades y recuerdos inolvidables.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 2 PISOS ────────────────────────────────────────────────── -->
+<section class="sec sec-dark" id="infraestructura">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Nuestros Espacios</span>
+      <h2 class="sec-title">2 Pisos, <span class="g">Un Solo Nivel</span> de Excelencia</h2>
+      <p class="sec-sub">Cada piso tiene su propia identidad, ambiente y experiencia única</p>
+    </div>
+    <div class="pisos-grid">
+      <!-- Piso 1 -->
+      <div class="piso-card rv-l">
+        <div class="piso-img">
+          <img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800&q=80" alt="Primer Piso Disco X — Pista Principal"/>
+          <div class="piso-floor-tag">1er Piso</div>
+          <div class="piso-cap">300+ personas</div>
+        </div>
+        <div class="piso-body">
+          <h3>Pista Principal &amp; Escenario</h3>
+          <p>El corazón de Disco X. Pista de baile de 300 m² con piso LED interactivo que cambia de color con la música. Escenario profesional para DJs y artistas nacionales con equipos de sonido JBL de 60,000 W de potencia y más de 200 fixtures de iluminación inteligente sincronizados.</p>
+          <p>Barra principal con más de 80 marcas de licores nacionales e importados. Zona de mesas para grupos y area de foto con iluminación especial.</p>
+          <div class="piso-tags">
+            <span class="piso-tag">Capacidad 300+</span>
+            <span class="piso-tag">Pista LED</span>
+            <span class="piso-tag">Sonido JBL 60k W</span>
+            <span class="piso-tag">Escenario Pro</span>
+            <span class="piso-tag">Barra Principal</span>
+            <span class="piso-tag">200+ Luces</span>
+            <span class="piso-tag">Zona de Mesas</span>
+            <span class="piso-tag">Fotógrafo Oficial</span>
+          </div>
+        </div>
+      </div>
+      <!-- Piso 2 -->
+      <div class="piso-card rv-r">
+        <div class="piso-img">
+          <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=800&q=80" alt="Segundo Piso VIP Disco X"/>
+          <div class="piso-floor-tag" style="background:var(--gold-dark);">2do Piso VIP</div>
+          <div class="piso-cap">200 personas</div>
+        </div>
+        <div class="piso-body">
+          <h3>Zona VIP &amp; Área Premium</h3>
+          <p>Exclusividad absoluta en el segundo piso. Vista panorámica de 180° sobre la pista principal. Sofás y lounges premium, iluminación ambiente dorada y el mejor servicio de anfitriones personalizados de Huanta.</p>
+          <p>Barra VIP exclusiva con carta de licores de importación, acceso reservado con control de ingreso y áreas privadas para grupos con decoración personalizada.</p>
+          <div class="piso-tags">
+            <span class="piso-tag">Capacidad 200</span>
+            <span class="piso-tag">Vista Panorámica</span>
+            <span class="piso-tag">Sofás Premium</span>
+            <span class="piso-tag">Barra VIP</span>
+            <span class="piso-tag">Anfitriones</span>
+            <span class="piso-tag">Acceso Controlado</span>
+            <span class="piso-tag">Áreas Privadas</span>
+            <span class="piso-tag">Licores Importados</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capacidad total -->
+    <div class="rv" style="margin-top:40px;padding:28px 32px;background:var(--bg-2);border:1px solid var(--gold-border);border-radius:var(--r-card);display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:28px;">
+      <div style="text-align:center;">
+        <div style="font-family:var(--font-display);font-size:48px;font-weight:900;color:var(--gold);filter:drop-shadow(0 0 10px rgba(212,175,55,.3));"><span data-count="500">0</span><sup style="font-size:.45em;vertical-align:super;">+</sup></div>
+        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--txt-2);margin-top:4px;">Capacidad Total</div>
+      </div>
+      <div style="width:1px;height:60px;background:linear-gradient(180deg,transparent,rgba(212,175,55,.25),transparent);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:var(--font-display);font-size:48px;font-weight:900;color:var(--gold);filter:drop-shadow(0 0 10px rgba(212,175,55,.3));">300</div>
+        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--txt-2);margin-top:4px;">m² Pista Principal</div>
+      </div>
+      <div style="width:1px;height:60px;background:linear-gradient(180deg,transparent,rgba(212,175,55,.25),transparent);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:var(--font-display);font-size:48px;font-weight:900;color:var(--gold);filter:drop-shadow(0 0 10px rgba(212,175,55,.3));">2</div>
+        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--txt-2);margin-top:4px;">Pisos / Ambientes</div>
+      </div>
+      <div style="width:1px;height:60px;background:linear-gradient(180deg,transparent,rgba(212,175,55,.25),transparent);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:var(--font-display);font-size:48px;font-weight:900;color:var(--gold);filter:drop-shadow(0 0 10px rgba(212,175,55,.3));"><span data-count="60">0</span>k W</div>
+        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--txt-2);margin-top:4px;">Potencia de Sonido</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SEGURIDAD DETALLADA ────────────────────────────────────── -->
+<section class="sec sec-darker" id="seguridad">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Tu Tranquilidad Primero</span>
+      <h2 class="sec-title">La Mejor <span class="g">Seguridad</span> de Huanta</h2>
+      <p class="sec-sub">Invertimos en tu seguridad porque mereces disfrutar sin preocupaciones</p>
+    </div>
+    <div class="security-grid">
+      <div class="sec-card rv d1"><i class="fa-solid fa-camera-cctv"></i><h4>32 Cámaras HD</h4><p>Cobertura total del local con cámaras de alta definición. Monitoreo en tiempo real las 24 horas.</p></div>
+      <div class="sec-card rv d2"><i class="fa-solid fa-user-shield"></i><h4>Personal Elite</h4><p>Equipo de seguridad formado profesionalmente con protocolos de desescalada y primeros auxilios.</p></div>
+      <div class="sec-card rv d3"><i class="fa-solid fa-triangle-exclamation"></i><h4>Evacuación Planificada</h4><p>Rutas de evacuación señalizadas, iluminación de emergencia y simulacros periódicos certificados.</p></div>
+      <div class="sec-card rv d4"><i class="fa-solid fa-kit-medical"></i><h4>Primeros Auxilios</h4><p>Botiquín completo y personal con certificación en primeros auxilios disponible toda la noche.</p></div>
+      <div class="sec-card rv d1"><i class="fa-solid fa-id-card"></i><h4>Control de Ingreso</h4><p>Verificación de identidad en puerta. Solo mayores de 18 años con DNI vigente. Sin excepciones.</p></div>
+      <div class="sec-card rv d2"><i class="fa-solid fa-ban"></i><h4>Tolerancia Cero</h4><p>Cero sustancias prohibidas, cero violencia, cero acoso. Política estricta aplicada sin excepciones.</p></div>
+      <div class="sec-card rv d3"><i class="fa-solid fa-radio"></i><h4>Comunicación Total</h4><p>Todo el personal de seguridad equipado con radios para respuesta inmediata ante cualquier situación.</p></div>
+      <div class="sec-card rv d4"><i class="fa-solid fa-car"></i><h4>Estacionamiento Vigilado</h4><p>Playa privada con vigilancia permanente. Tu vehículo protegido mientras disfrutas la noche.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EQUIPO ──────────────────────────────────────────────────── -->
+<section class="sec" id="equipo">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Las Personas Detrás</span>
+      <h2 class="sec-title">Nuestro <span class="g">Equipo</span></h2>
+      <p class="sec-sub">Profesionales apasionados que hacen posible cada noche</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card rv d1">
+        <div class="team-img">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Gerente General"/>
+        </div>
+        <div class="team-body">
+          <div class="team-role">Fundador &amp; Gerente General</div>
+          <div class="team-name">José Ramirez</div>
+          <p class="team-desc">Visionario detrás de Disco X. 9 años construyendo la mejor experiencia nocturna de Huanta.</p>
+        </div>
+      </div>
+      <div class="team-card rv d2">
+        <div class="team-img">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Directora de Eventos"/>
+        </div>
+        <div class="team-body">
+          <div class="team-role">Directora de Eventos</div>
+          <div class="team-name">Valeria Cruz</div>
+          <p class="team-desc">Organiza cada evento con precisión milimétrica. La mente creativa detrás de nuestras noches temáticas.</p>
+        </div>
+      </div>
+      <div class="team-card rv d3">
+        <div class="team-img">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80" alt="Jefe de Seguridad"/>
+        </div>
+        <div class="team-body">
+          <div class="team-role">Jefe de Seguridad</div>
+          <div class="team-name">Marco Torres</div>
+          <p class="team-desc">Ex policía con 15 años de experiencia. Garantiza que cada noche sea segura para todos.</p>
+        </div>
+      </div>
+      <div class="team-card rv d4">
+        <div class="team-img">
+          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80" alt="Jefa de Relaciones"/>
+        </div>
+        <div class="team-body">
+          <div class="team-role">Jefa de Relaciones VIP</div>
+          <div class="team-name">Sofía Mendoza</div>
+          <p class="team-desc">La cara de nuestro servicio VIP. Hace que cada cliente se sienta el más importante de la noche.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DIFERENCIADORES ────────────────────────────────────────── -->
+<section class="sec sec-dark" id="diferenciadores">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">¿Por Qué Elegirnos?</span>
+      <h2 class="sec-title">Lo Que Nos Hace <span class="g">Únicos</span></h2>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-item rv d1">
+        <div class="diff-ic"><i class="fa-solid fa-volume-high"></i></div>
+        <div class="diff-tx"><h4>Sonido JBL Profesional — 60,000 W</h4><p>El sistema de sonido más potente de Huanta. Una experiencia sonora que sientes en todo el cuerpo, sin distorsión, perfecta a cualquier volumen.</p></div>
+      </div>
+      <div class="diff-item rv d2">
+        <div class="diff-ic"><i class="fa-solid fa-lightbulb"></i></div>
+        <div class="diff-tx"><h4>Iluminación Inteligente — 200+ Fixtures</h4><p>Shows de luces sincronizados con la música en tiempo real. Más de 200 luces programables que convierten la pista en un espectáculo visual.</p></div>
+      </div>
+      <div class="diff-item rv d3">
+        <div class="diff-ic"><i class="fa-solid fa-headphones"></i></div>
+        <div class="diff-tx"><h4>DJs Nacionales Cada Fin de Semana</h4><p>Traemos artistas que normalmente solo ves en Lima. Disco X es el único local de Huanta que ofrece DJ nacionales de forma regular.</p></div>
+      </div>
+      <div class="diff-item rv d4">
+        <div class="diff-ic"><i class="fa-solid fa-crown"></i></div>
+        <div class="diff-tx"><h4>Zona VIP Real — No Una Mesa Apartada</h4><p>Nuestro 2do piso VIP es un ambiente completamente diferente: propio bar, propio ambiente, propio personal y vista premium de la pista.</p></div>
+      </div>
+      <div class="diff-item rv d1">
+        <div class="diff-ic"><i class="fa-solid fa-shield-halved"></i></div>
+        <div class="diff-tx"><h4>La Mejor Seguridad de la Región</h4><p>32 cámaras HD, personal entrenado, protocolo de emergencias y tolerancia cero. La seguridad más seria de Huanta, sin excusas.</p></div>
+      </div>
+      <div class="diff-item rv d2">
+        <div class="diff-ic"><i class="fa-solid fa-wine-glass"></i></div>
+        <div class="diff-tx"><h4>80+ Marcas de Licores — Combos Únicos</h4><p>La carta de bebidas más amplia de Huanta. Licores importados, jarras, combos y paquetes diseñados para cada tipo de noche.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RECONOCIMIENTOS ─────────────────────────────────────────── -->
+<section class="sec sec-darker" id="reconocimientos">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Orgullo Huantino</span>
+      <h2 class="sec-title">Premios &amp; <span class="g">Reconocimientos</span></h2>
+    </div>
+    <div class="awards-grid">
+      <div class="award-card rv d1">
+        <div class="award-icon"><i class="fa-solid fa-trophy"></i></div>
+        <div class="award-year">2023</div>
+        <div class="award-name">Mejor Discoteca de Huanta</div>
+        <p class="award-desc">Reconocida por la comunidad y medios locales como la mejor experiencia nocturna de la provincia.</p>
+      </div>
+      <div class="award-card rv d2">
+        <div class="award-icon"><i class="fa-solid fa-medal"></i></div>
+        <div class="award-year">2022</div>
+        <div class="award-name">Premio Seguridad Nocturna</div>
+        <p class="award-desc">Reconocimiento por mantener el ambiente nocturno más seguro y responsable de la región de Ayacucho.</p>
+      </div>
+      <div class="award-card rv d3">
+        <div class="award-icon"><i class="fa-solid fa-star"></i></div>
+        <div class="award-year">2024</div>
+        <div class="award-name">5 Estrellas en Google</div>
+        <p class="award-desc">Más de 500 reseñas con calificación perfecta. El mejor promedio de valoración nocturna en Huanta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ──────────────────────────────────────────────── -->
+<section class="sec" style="padding:72px 0;text-align:center;">
+  <div class="cx">
+    <div class="rv">
+      <span class="eyebrow" style="justify-content:center;">¿Listo para Vivir la Experiencia?</span>
+      <h2 class="sec-title" style="margin-bottom:14px;">Reserva Tu Noche <span class="g">Premium</span></h2>
+      <p class="sec-sub" style="margin-bottom:36px;">Descubre por ti mismo por qué somos la mejor disco de Huanta</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="reservas.html" class="btn btn-gold btn-lg"><i class="fa-solid fa-champagne-glasses"></i>Reservar Mesa VIP</a>
+        <a href="vip.html"      class="btn btn-outline btn-lg"><i class="fa-solid fa-crown"></i>Ver Zona VIP</a>
+        <a href="https://wa.me/51901267943" class="btn btn-ghost btn-lg" target="_blank"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="ft-glow"></div>
+  <div class="cx">
+    <div class="ft-main">
+      <div class="ft-brand">
+        <h3>DISCO X</h3>
+        <p>La experiencia nocturna más exclusiva de Huanta. 2 pisos, DJs nacionales, zona VIP y la mejor seguridad de la región.</p>
+        <div class="ft-socials">
+          <a href="#" class="ft-soc"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://wa.me/51901267943" class="ft-soc"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="ft-col">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="../index.html">Inicio</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="eventos.html">Eventos</a></li>
+          <li><a href="galeria.html">Galería</a></li>
+          <li><a href="vip.html">Zona VIP</a></li>
+          <li><a href="reservas.html">Reservas</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Servicios</h4>
+        <ul>
+          <li><a href="vip.html">Mesa VIP</a></li>
+          <li><a href="reservas.html">Cumpleaños</a></li>
+          <li><a href="reservas.html">Evento Privado</a></li>
+          <li><a href="reservas.html">Promoción Escolar</a></li>
+          <li><a href="eventos.html">Conciertos</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Contacto</h4>
+        <p><i class="fa-solid fa-location-dot" style="color:var(--gold);margin-right:8px;"></i>Jr. Lima Cdra. 3, Huanta</p>
+        <p><i class="fa-brands fa-whatsapp" style="color:var(--gold);margin-right:8px;"></i>901 267 943</p>
+        <p><i class="fa-solid fa-clock" style="color:var(--gold);margin-right:8px;"></i>Vie–Dom: 10PM →</p>
+        <p style="margin-top:14px;font-size:11px;color:var(--txt-3);">+18 · Beber con responsabilidad</p>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <p>© 2025 Disco X · Huanta, Ayacucho · Todos los derechos reservados</p>
+      <p>Diseñado con <span style="color:var(--gold);">♦</span> Agencia Digital Premium</p>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp -->
+<div class="wa-float">
+  <div class="wa-tip">¿Reservas? ¡Escríbenos! 🎉</div>
+  <a href="https://wa.me/51901267943?text=Hola,%20quiero%20reservar%20en%20Disco%20X" class="wa-btn" target="_blank" rel="noopener">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
