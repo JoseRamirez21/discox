@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Disco X — La Discoteca Más Exclusiva de Huanta</title>
+  <meta name="description" content="Disco X, la experiencia nocturna premium de Huanta. DJs nacionales, Zona VIP, combos exclusivos, eventos y la mejor seguridad de la región."/>
+  <meta name="keywords" content="discoteca huanta, disco huanta, vida nocturna huanta, club nocturno ayacucho, disco vip huanta, eventos huanta"/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://discox.pe/"/>
+  <!-- OG -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Disco X — La Discoteca Premium de Huanta"/>
+  <meta property="og:description" content="La experiencia nocturna más exclusiva de Huanta. DJs nacionales, zona VIP y la mejor música."/>
+  <meta property="og:url" content="https://discox.pe/"/>
+  <!-- Schema -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"NightClub","name":"Disco X","description":"La discoteca más exclusiva de Huanta, Ayacucho","url":"https://discox.pe","telephone":"+51901267943","address":{"@type":"PostalAddress","addressLocality":"Huanta","addressRegion":"Ayacucho","addressCountry":"PE"},"openingHours":"Fr-Su 22:00-05:00","priceRange":"$$"}</script>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/styles.css"/>
+</head>
+<body>
+
+<!-- ── CURSOR ────────────────────────────────────────────────── -->
+<div id="cx-dot"></div>
+<div id="cx-ring"></div>
+<div id="sp-bar"></div>
+<div id="noise"></div>
+<canvas id="px-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.38"></canvas>
+
+<!-- ── AGE GATE ──────────────────────────────────────────────── -->
+<div id="age-gate">
+  <div class="ag-logo">X</div>
+  <h2>Verificación de Edad</h2>
+  <p>Disco X es un espacio exclusivo para mayores de 18 años. Por favor confirma tu edad para continuar.</p>
+  <div class="ag-btns">
+    <button id="ag-yes" class="btn btn-gold btn-lg">Tengo 18 o más</button>
+    <button id="ag-no"  class="btn btn-outline">Soy menor de edad</button>
+  </div>
+  <p style="font-size:11px;color:var(--txt-3);margin-top:12px;">Al ingresar confirmas tener la edad legal requerida.</p>
+</div>
+
+<!-- ── NAVBAR ────────────────────────────────────────────────── -->
+<nav class="nav" role="navigation">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-emblem"><span>X</span></div>
+      <div>
+        <span class="nav-name">Disco X</span>
+        <span class="nav-sub">Huanta · Premium</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Inicio</a>
+      <a href="views/nosotros.html">Nosotros</a>
+      <a href="views/eventos.html">Eventos</a>
+      <a href="views/galeria.html">Galería</a>
+      <a href="views/vip.html">VIP</a>
+      <a href="views/reservas.html" class="nav-cta">Reservar Mesa</a>
+    </div>
+    <button class="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-menu">
+  <a href="index.html">Inicio</a>
+  <a href="views/nosotros.html">Nosotros</a>
+  <a href="views/eventos.html">Eventos</a>
+  <a href="views/galeria.html">Galería</a>
+  <a href="views/vip.html">VIP</a>
+  <a href="views/reservas.html">Reservas</a>
+</div>
+
+<!-- ── TICKER ────────────────────────────────────────────────── -->
+<div class="ticker-wrap" style="margin-top:76px;position:relative;z-index:2;">
+  <div class="ticker-track">
+    <!-- duplicado para loop continuo -->
+    <span class="ticker-item"><i class="fa-solid fa-star"></i>PRÓXIMO EVENTO: 28 DE JUNIO</span>
+    <span class="ticker-item"><i class="fa-solid fa-music"></i>DJS EN VIVO TODOS LOS FINES DE SEMANA</span>
+    <span class="ticker-item"><i class="fa-solid fa-champagne-glasses"></i>RESERVA TU MESA VIP AL 901 267 943</span>
+    <span class="ticker-item"><i class="fa-solid fa-fire"></i>OPEN BAR • JARRAS • COMBOS ESPECIALES</span>
+    <span class="ticker-item"><i class="fa-solid fa-shield-halved"></i>LA MEJOR SEGURIDAD DE HUANTA</span>
+    <span class="ticker-item"><i class="fa-solid fa-star"></i>PRÓXIMO EVENTO: 28 DE JUNIO</span>
+    <span class="ticker-item"><i class="fa-solid fa-music"></i>DJS EN VIVO TODOS LOS FINES DE SEMANA</span>
+    <span class="ticker-item"><i class="fa-solid fa-champagne-glasses"></i>RESERVA TU MESA VIP AL 901 267 943</span>
+    <span class="ticker-item"><i class="fa-solid fa-fire"></i>OPEN BAR • JARRAS • COMBOS ESPECIALES</span>
+    <span class="ticker-item"><i class="fa-solid fa-shield-halved"></i>LA MEJOR SEGURIDAD DE HUANTA</span>
+  </div>
+</div>
+
+<!-- ── HERO ──────────────────────────────────────────────────── -->
+<section class="hero" id="inicio">
+  <div class="hero-vid">
+    <!-- Reemplaza con: assets/videos/hero.mp4 -->
+    <video autoplay muted loop playsinline preload="none">
+      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"/>
+    </video>
+    <div class="hero-fallback"></div>
+  </div>
+  <div class="hero-ov"></div>
+  <div class="hero-lights">
+    <div class="hl hl-1"></div>
+    <div class="hl hl-2"></div>
+    <div class="hl hl-3"></div>
+  </div>
+  <div class="hero-corners">
+    <div class="hc hc-tl"></div><div class="hc hc-tr"></div>
+    <div class="hc hc-bl"></div><div class="hc hc-br"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      La Discoteca Más Exclusiva de Huanta
+    </div>
+    <h1 class="hero-title">
+      <span class="l1">La Noche</span>
+      <span class="l2">Comienza Aquí</span>
+    </h1>
+    <p class="hero-desc">2 pisos de pura adrenalina. DJs nacionales, Zona VIP, combos premium y la mejor seguridad. Vive Huanta de noche como nunca antes.</p>
+    <div class="hero-acts">
+      <a href="views/reservas.html" class="btn btn-gold btn-lg"><i class="fa-solid fa-champagne-glasses"></i>Reservar Mesa VIP</a>
+      <a href="views/eventos.html"  class="btn btn-outline btn-lg"><i class="fa-solid fa-calendar-star"></i>Ver Eventos</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="hs-line"></div><span>Scroll</span></div>
+
+  <!-- Ambient audio + botón toggle -->
+  <audio id="ambient-audio" loop preload="none">
+    <!-- Puedes usar un mp3 propio: src="assets/audio/ambient.mp3" -->
+  </audio>
+  <button id="ambient-btn" title="Activar sonido ambiente" style="position:absolute;bottom:36px;right:36px;z-index:10;background:rgba(212,175,55,.1);border:1px solid var(--gold-border);border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:15px;cursor:none;transition:background .2s">
+    <i class="fa-solid fa-volume-xmark"></i>
+  </button>
+</section>
+
+<!-- ── STATS ─────────────────────────────────────────────────── -->
+<section class="stats-sec">
+  <div class="cx">
+    <div class="stats-grid">
+      <div class="stat rv d1">
+        <div class="stat-n"><span data-count="8">0</span><sup>+</sup></div>
+        <span class="stat-l">Años de Experiencia</span>
+      </div>
+      <div class="stat rv d2">
+        <div class="stat-n"><span data-count="2">0</span></div>
+        <span class="stat-l">Pisos / Ambientes</span>
+      </div>
+      <div class="stat rv d3">
+        <div class="stat-n"><span data-count="500">0</span><sup>+</sup></div>
+        <span class="stat-l">Capacidad Total</span>
+      </div>
+      <div class="stat rv d4">
+        <div class="stat-n"><span data-count="150">0</span><sup>+</sup></div>
+        <span class="stat-l">Eventos Realizados</span>
+      </div>
+      <div class="stat rv d5">
+        <div class="stat-n"><span data-count="60">0</span><sup>k+</sup></div>
+        <span class="stat-l">Clientes Felices</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRÓXIMO EVENTO + COUNTDOWN ────────────────────────────── -->
+<section class="next-event" id="proximo">
+  <div class="cx">
+    <div class="ne-grid">
+      <div class="ne-img rv-l">
+        <!-- Reemplaza con imagen real del evento -->
+        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80" alt="Noche de Aniversario Disco X" loading="lazy"/>
+        <div class="ne-live"><span class="ne-live-dot"></span>Próximo Evento</div>
+      </div>
+      <div class="ne-info rv-r">
+        <span class="eyebrow">No Te Lo Pierdas</span>
+        <h2 class="ne-title">Noche de Aniversario — Disco X</h2>
+        <p class="ne-meta"><i class="fa-solid fa-calendar" style="color:var(--gold);margin-right:8px;"></i>Sábado 28 de Junio, 2025 — 10:00 PM</p>
+        <p class="ne-desc">Celebramos otro año de las mejores noches de Huanta. DJ nacional en vivo, open bar la primera hora, sorpresas VIP, show de luces cinematográfico y los mejores combos de la noche. Cupos limitados — reserva YA.</p>
+        <!-- Countdown real — cambia data-date al evento real -->
+        <div class="countdown" id="countdown" data-date="2025-06-28T22:00:00"></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+          <a href="views/reservas.html" class="btn btn-gold"><i class="fa-solid fa-ticket"></i>Reservar Entrada</a>
+          <a href="views/eventos.html"  class="btn btn-outline">Ver Todos los Eventos</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ESTA NOCHE ─────────────────────────────────────────────── -->
+<section class="sec" id="esta-noche">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Cada Fin de Semana</span>
+      <h2 class="sec-title">¿Qué Pasa <span class="g">Esta Noche?</span></h2>
+      <p class="sec-sub">Disco X te ofrece la noche más completa de Huanta — siempre</p>
+    </div>
+    <div class="tonight-grid">
+      <div class="tn-card rv d1">
+        <div class="tn-icon"><i class="fa-solid fa-turntable"></i></div>
+        <h3>DJ en Vivo</h3>
+        <p>Los mejores DJs nacionales y residentes tomando los platos desde las 11 PM hasta el amanecer.</p>
+        <span class="tn-tag">11 PM – 5 AM</span>
+      </div>
+      <div class="tn-card rv d2">
+        <div class="tn-icon"><i class="fa-solid fa-crown"></i></div>
+        <h3>Zona VIP Abierta</h3>
+        <p>Segundo piso exclusivo con servicio personalizado, sofás premium y atención directa toda la noche.</p>
+        <span class="tn-tag">Reserva Tu Espacio</span>
+      </div>
+      <div class="tn-card rv d3">
+        <div class="tn-icon"><i class="fa-solid fa-fire"></i></div>
+        <h3>Show de Luces</h3>
+        <p>Iluminación profesional inteligente sincronizada con la música para una experiencia visual inmersiva.</p>
+        <span class="tn-tag">Toda la Noche</span>
+      </div>
+      <div class="tn-card rv d1">
+        <div class="tn-icon"><i class="fa-solid fa-wine-glass"></i></div>
+        <h3>Open Bar Especial</h3>
+        <p>Happy Hour de 10 PM a 12 AM con precios especiales en jarras, combos y tragos de autor.</p>
+        <span class="tn-tag">10 PM – 12 AM</span>
+      </div>
+      <div class="tn-card rv d2">
+        <div class="tn-icon"><i class="fa-solid fa-camera"></i></div>
+        <h3>Fotógrafo Oficial</h3>
+        <p>Fotógrafo profesional para capturar los mejores momentos de tu noche. Fotos etiquetadas en redes.</p>
+        <span class="tn-tag">Viernes y Sábado</span>
+      </div>
+      <div class="tn-card rv d3">
+        <div class="tn-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>Seguridad Total</h3>
+        <p>Personal capacitado, cámaras HD en todo el local y protocolo de seguridad de primer nivel.</p>
+        <span class="tn-tag">24/7</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EVENTOS DESTACADOS ─────────────────────────────────────── -->
+<section class="sec sec-dark" id="eventos">
+  <div class="cx">
+    <div class="sec-hd" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+      <div class="rv">
+        <span class="eyebrow">Agenda</span>
+        <h2 class="sec-title">Eventos <span class="g">Destacados</span></h2>
+        <p class="sec-sub">Fiestas temáticas, conciertos y noches especiales</p>
+      </div>
+      <a href="views/eventos.html" class="btn btn-outline rv-r">Ver Todos <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="ev-grid">
+      <div class="ev-card feat rv-l">
+        <div class="ev-img">
+          <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=700&q=80" alt="Noche de Aniversario" loading="lazy"/>
+        </div>
+        <div class="ev-body">
+          <span class="badge">Evento Especial</span>
+          <div class="ev-date" style="margin-top:10px;"><i class="fa-solid fa-calendar" style="margin-right:6px;"></i>Sábado 28 · Jun · 2025</div>
+          <h3 class="ev-name">Noche de Aniversario</h3>
+          <p class="ev-desc">DJ nacional, open bar la primera hora, show de luces y sorpresas VIP. El evento más grande del año.</p>
+          <a href="views/reservas.html" class="btn btn-gold btn-sm">Reservar</a>
+        </div>
+      </div>
+      <div class="ev-card rv d2">
+        <div class="ev-img">
+          <img src="https://images.unsplash.com/photo-1598387180432-5d6e7c0b5a80?w=500&q=80" alt="Red & Gold Night" loading="lazy"/>
+        </div>
+        <div class="ev-body">
+          <span class="badge">Fiesta Temática</span>
+          <div class="ev-date" style="margin-top:10px;">Viernes 20 · Jun · 2025</div>
+          <h3 class="ev-name">Red &amp; Gold Night</h3>
+          <p class="ev-desc">Código de vestimenta rojo y dorado. Zona VIP con beneficios exclusivos para los primeros 50.</p>
+          <a href="views/reservas.html" class="btn btn-outline btn-sm">Reservar</a>
+        </div>
+      </div>
+      <div class="ev-card rv d3">
+        <div class="ev-img">
+          <img src="https://images.unsplash.com/photo-1571266028243-e8a7270ed42c?w=500&q=80" alt="DJ Night" loading="lazy"/>
+        </div>
+        <div class="ev-body">
+          <span class="badge">DJ Nacional</span>
+          <div class="ev-date" style="margin-top:10px;">Sábado 5 · Jul · 2025</div>
+          <h3 class="ev-name">DJ Invitado Nacional</h3>
+          <p class="ev-desc">Artista nacional de primera línea en el escenario de Disco X. Una noche histórica en Huanta.</p>
+          <a href="views/reservas.html" class="btn btn-outline btn-sm">Reservar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DJS ────────────────────────────────────────────────────── -->
+<section class="sec sec-darker" id="djs">
+  <div class="cx">
+    <div class="sec-hd" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:40px;">
+      <div class="rv">
+        <span class="eyebrow">Los Artistas</span>
+        <h2 class="sec-title">Nuestros <span class="g">DJs</span></h2>
+      </div>
+      <a href="views/eventos.html" class="btn btn-outline rv-r">Ver Calendario</a>
+    </div>
+    <div class="dj-scroll">
+      <div class="dj-track">
+        <div class="dj-card">
+          <img class="dj-img" src="https://images.unsplash.com/photo-1571727153934-b9e0059b7ab2?w=400&q=80" alt="DJ Shadow X"/>
+          <div class="dj-ov">
+            <p class="dj-role">DJ Residente</p>
+            <h3 class="dj-name">DJ Shadow X</h3>
+            <p class="dj-genre">Reggaeton · Trap · Urbano</p>
+            <div class="dj-soc">
+              <a href="#"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="dj-card">
+          <img class="dj-img" src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=400&q=80" alt="DJ Nova"/>
+          <div class="dj-ov">
+            <p class="dj-role">DJ Residente</p>
+            <h3 class="dj-name">DJ Nova</h3>
+            <p class="dj-genre">Electronic · House · Tech</p>
+            <div class="dj-soc">
+              <a href="#"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="dj-card">
+          <img class="dj-img" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&q=80" alt="DJ Kross"/>
+          <div class="dj-ov">
+            <p class="dj-role">DJ Invitado</p>
+            <h3 class="dj-name">DJ Kross</h3>
+            <p class="dj-genre">Cumbia · Salsa · Latino</p>
+            <div class="dj-soc">
+              <a href="#"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="dj-card">
+          <img class="dj-img" src="https://images.unsplash.com/photo-1484665754804-74b091211472?w=400&q=80" alt="DJ Luxe"/>
+          <div class="dj-ov">
+            <p class="dj-role">DJ Residente</p>
+            <h3 class="dj-name">DJ Luxe</h3>
+            <p class="dj-genre">R&amp;B · Hip Hop · Afrobeat</p>
+            <div class="dj-soc">
+              <a href="#"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="dj-card">
+          <img class="dj-img" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&q=80" alt="DJ Volt"/>
+          <div class="dj-ov">
+            <p class="dj-role">Nacional</p>
+            <h3 class="dj-name">DJ Volt</h3>
+            <p class="dj-genre">EDM · Progressive · Bass</p>
+            <div class="dj-soc">
+              <a href="#"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Schedule semanal -->
+    <div style="margin-top:48px;">
+      <h3 class="rv" style="font-family:var(--font-display);font-size:18px;color:var(--txt-1);letter-spacing:2px;margin-bottom:24px;text-align:center;">SCHEDULE SEMANAL</h3>
+      <div class="schedule-grid">
+        <div class="sched-card rv d1">
+          <div class="sched-day">Jueves</div>
+          <div class="sched-dj">DJ Nova</div>
+          <div class="sched-style">Electronic · Apertura de semana</div>
+          <div class="sched-time">10 PM → 3 AM</div>
+        </div>
+        <div class="sched-card today rv d2">
+          <div class="sched-day">Viernes ★</div>
+          <div class="sched-dj">DJ Shadow X</div>
+          <div class="sched-style">Reggaeton · Trap · Urbano</div>
+          <div class="sched-time">10 PM → 4 AM</div>
+        </div>
+        <div class="sched-card rv d3">
+          <div class="sched-day">Sábado</div>
+          <div class="sched-dj">DJ Invitado Nacional</div>
+          <div class="sched-style">Sorpresa cada semana</div>
+          <div class="sched-time">10 PM → 5 AM</div>
+        </div>
+        <div class="sched-card rv d4">
+          <div class="sched-day">Domingo</div>
+          <div class="sched-dj">DJ Luxe</div>
+          <div class="sched-style">R&amp;B · Hip Hop · Cierre</div>
+          <div class="sched-time">9 PM → 2 AM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMBOS & JARRAS ────────────────────────────────────────── -->
+<section class="sec" id="combos">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Carta de Bebidas</span>
+      <h2 class="sec-title">Combos &amp; <span class="g">Jarras</span></h2>
+      <p class="sec-sub">Los mejores precios para la mejor noche. Consulta disponibilidad.</p>
+    </div>
+    <div class="combos-wrap">
+      <div class="combo-card rv d1">
+        <div class="combo-icon"><i class="fa-solid fa-beer-mug-empty"></i></div>
+        <div class="combo-name">Jarra Clásica</div>
+        <div class="combo-includes">1 Jarra de cerveza (1L)<br>Cusqueña o Cristal a elección<br>Hielo incluido</div>
+        <div class="combo-price"><span>S/</span>28 <small>/ jarra</small></div>
+        <a href="views/reservas.html" class="btn btn-outline btn-sm" style="margin-top:16px;">Pedir</a>
+      </div>
+      <div class="combo-card popular rv d2">
+        <div class="combo-popular-tag">MÁS PEDIDO</div>
+        <div class="combo-icon"><i class="fa-solid fa-champagne-glasses"></i></div>
+        <div class="combo-name">Combo Fiesta</div>
+        <div class="combo-includes">2 Jarras de cerveza<br>1 Botella de ron o vodka<br>Gaseosa + hielo + vasos</div>
+        <div class="combo-price"><span>S/</span>95 <small>/ grupo</small></div>
+        <a href="views/reservas.html" class="btn btn-gold btn-sm" style="margin-top:16px;">Reservar</a>
+      </div>
+      <div class="combo-card rv d3">
+        <div class="combo-icon"><i class="fa-solid fa-crown"></i></div>
+        <div class="combo-name">Paquete VIP</div>
+        <div class="combo-includes">1 Botella Johnnie Walker<br>1 Botella de vodka premium<br>Mixers + hielo + snacks</div>
+        <div class="combo-price"><span>S/</span>220 <small>/ mesa</small></div>
+        <a href="views/vip.html" class="btn btn-outline btn-sm" style="margin-top:16px;">Ver VIP</a>
+      </div>
+      <div class="combo-card rv d1">
+        <div class="combo-icon"><i class="fa-solid fa-martini-glass"></i></div>
+        <div class="combo-name">Combo Shots</div>
+        <div class="combo-includes">10 shots a elección<br>Tequila / Jäger / Vodka<br>Limón y sal incluidos</div>
+        <div class="combo-price"><span>S/</span>45 <small>/ 10 shots</small></div>
+        <a href="views/reservas.html" class="btn btn-outline btn-sm" style="margin-top:16px;">Pedir</a>
+      </div>
+      <div class="combo-card rv d2">
+        <div class="combo-icon"><i class="fa-solid fa-wine-glass-empty"></i></div>
+        <div class="combo-name">Jarra Corona</div>
+        <div class="combo-includes">1 Jarra Corona (1L)<br>Importada y bien fría<br>Limones incluidos</div>
+        <div class="combo-price"><span>S/</span>38 <small>/ jarra</small></div>
+        <a href="views/reservas.html" class="btn btn-outline btn-sm" style="margin-top:16px;">Pedir</a>
+      </div>
+      <div class="combo-card rv d3">
+        <div class="combo-icon"><i class="fa-solid fa-cake-candles"></i></div>
+        <div class="combo-name">Paquete Cumpleaños</div>
+        <div class="combo-includes">Mesa decorada<br>2 Botellas + mixers<br>Pastel + sorpresa especial</div>
+        <div class="combo-price"><span>S/</span>180 <small>/ paquete</small></div>
+        <a href="views/reservas.html" class="btn btn-gold btn-sm" style="margin-top:16px;">Reservar</a>
+      </div>
+    </div>
+    <p class="rv" style="text-align:center;font-size:11px;color:var(--txt-3);margin-top:20px;letter-spacing:1px;">* Precios referenciales. Consulta disponibilidad y promociones vigentes vía WhatsApp.</p>
+  </div>
+</section>
+
+<!-- ── PROMOS ─────────────────────────────────────────────────── -->
+<section class="sec sec-dark" id="promos">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Ofertas Exclusivas</span>
+      <h2 class="sec-title">Nuestras <span class="g">Promociones</span></h2>
+      <p class="sec-sub">Diseñadas para que tu noche sea perfecta sin gastar de más</p>
+    </div>
+    <div class="promos-grid">
+      <div class="promo-card rv d1">
+        <div class="promo-icon"><i class="fa-solid fa-cake-candles"></i></div>
+        <div class="promo-text">
+          <h4>Cumpleaños Gratis</h4>
+          <p>El cumpleañero entra sin costo. Mesa decorada, canción dedicada y sorpresa especial de la disco.</p>
+          <div class="promo-disc">ENTRADA LIBRE</div>
+        </div>
+      </div>
+      <div class="promo-card rv d2">
+        <div class="promo-icon"><i class="fa-solid fa-people-group"></i></div>
+        <div class="promo-text">
+          <h4>Grupo de 10+</h4>
+          <p>Grupos de 10 personas o más obtienen mesa reservada + 1 jarra gratis de bienvenida.</p>
+          <div class="promo-disc">1 JARRA GRATIS</div>
+        </div>
+      </div>
+      <div class="promo-card rv d3">
+        <div class="promo-icon"><i class="fa-solid fa-venus"></i></div>
+        <div class="promo-text">
+          <h4>Noche de Damas</h4>
+          <p>Todos los jueves: las damas entran gratis hasta las 11 PM. Trago de bienvenida incluido.</p>
+          <div class="promo-disc">ENTRADA + TRAGO GRATIS</div>
+        </div>
+      </div>
+      <div class="promo-card rv d1">
+        <div class="promo-icon"><i class="fa-solid fa-clock"></i></div>
+        <div class="promo-text">
+          <h4>Happy Hour</h4>
+          <p>De 10 PM a 12 AM todos los fines de semana. 2x1 en cervezas y descuentos en jarras.</p>
+          <div class="promo-disc">2X1 EN CERVEZAS</div>
+        </div>
+      </div>
+      <div class="promo-card rv d2">
+        <div class="promo-icon"><i class="fa-solid fa-star"></i></div>
+        <div class="promo-text">
+          <h4>Aniversario de Pareja</h4>
+          <p>Celebra tu aniversario con nosotros. Mesa especial, botella de champaña y sorpresa romántica.</p>
+          <div class="promo-disc">CHAMPAÑA GRATIS</div>
+        </div>
+      </div>
+      <div class="promo-card rv d3">
+        <div class="promo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="promo-text">
+          <h4>Fiesta de Promoción</h4>
+          <p>Reserva exclusiva para promociones escolares y universitarias. Paquetes especiales grupales.</p>
+          <div class="promo-disc">PRECIO ESPECIAL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PATROCINADORES ─────────────────────────────────────────── -->
+<div class="sponsors-sec">
+  <div class="sponsors-label">Marcas que Nos Respaldan</div>
+  <div class="sponsors-track-wrap">
+    <div class="sponsors-track">
+      <!-- original -->
+      <div class="sponsor-item"><span class="sponsor-name">Johnnie Walker</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Jägermeister</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Corona Extra</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Cusqueña</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Absolut</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Bacardí</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Havana Club</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Jack Daniel's</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Heineken</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Baileys</span></div>
+      <!-- duplicado para loop -->
+      <div class="sponsor-item"><span class="sponsor-name">Johnnie Walker</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Jägermeister</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Corona Extra</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Cusqueña</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Absolut</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Bacardí</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Havana Club</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Jack Daniel's</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Heineken</span></div>
+      <div class="sponsor-item"><span class="sponsor-name">Baileys</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── VIP PREVIEW ────────────────────────────────────────────── -->
+<section class="sec vip-sec" id="vip">
+  <div class="vip-bg-glow"></div>
+  <div class="cx">
+    <div class="vip-grid">
+      <div class="vip-visual rv-l">
+        <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=700&q=80" alt="Zona VIP Disco X"/>
+        <div class="vip-badge">
+          <span class="vip-badge-n">VIP</span>
+          <span class="vip-badge-l">2do Piso Exclusivo</span>
+        </div>
+      </div>
+      <div class="rv-r">
+        <span class="eyebrow">Solo Para Ti</span>
+        <h2 class="sec-title">Experiencia <span class="g">VIP</span></h2>
+        <p class="sec-sub">Donde la exclusividad es el estándar, no la excepción</p>
+        <div class="vip-perks">
+          <div class="vip-perk">
+            <div class="vip-perk-ic"><i class="fa-solid fa-champagne-glasses"></i></div>
+            <div class="vip-perk-tx"><h4>Open Bar Premium</h4><p>Licores importados, tragos de autor y la mejor selección de la noche.</p></div>
+          </div>
+          <div class="vip-perk">
+            <div class="vip-perk-ic"><i class="fa-solid fa-couch"></i></div>
+            <div class="vip-perk-tx"><h4>Zona Privada 2do Piso</h4><p>Área reservada con vista panorámica a la pista y ambiente exclusivo.</p></div>
+          </div>
+          <div class="vip-perk">
+            <div class="vip-perk-ic"><i class="fa-solid fa-concierge-bell"></i></div>
+            <div class="vip-perk-tx"><h4>Servicio Personalizado</h4><p>Un anfitrión dedicado exclusivamente para tu grupo toda la noche.</p></div>
+          </div>
+          <div class="vip-perk">
+            <div class="vip-perk-ic"><i class="fa-solid fa-door-open"></i></div>
+            <div class="vip-perk-tx"><h4>Acceso Prioritario</h4><p>Ingreso directo sin filas. Tu noche empieza desde que llegas.</p></div>
+          </div>
+          <div class="vip-perk">
+            <div class="vip-perk-ic"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="vip-perk-tx"><h4>Seguridad Reforzada</h4><p>Zona VIP con personal de seguridad dedicado y acceso controlado.</p></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="views/vip.html"     class="btn btn-gold"><i class="fa-solid fa-crown"></i>Ver Zona VIP</a>
+          <a href="views/reservas.html" class="btn btn-outline">Reservar Mesa VIP</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GALERÍA HOME ───────────────────────────────────────────── -->
+<section class="sec sec-darker" id="galeria">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Momentos Únicos</span>
+      <h2 class="sec-title">Nuestra <span class="g">Galería</span></h2>
+      <p class="sec-sub">Cada noche en Disco X merece ser recordada</p>
+    </div>
+    <div class="gal-grid rv">
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800&q=80" alt="Pista principal Disco X" loading="lazy"/><div class="gal-ov"><i class="fa-solid fa-magnifying-glass-plus"></i></div></div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1429514513361-8fa32282fd5f?w=400&q=80" alt="Ambiente nocturno" loading="lazy"/><div class="gal-ov"><i class="fa-solid fa-magnifying-glass-plus"></i></div></div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&q=80" alt="DJ en acción" loading="lazy"/><div class="gal-ov"><i class="fa-solid fa-magnifying-glass-plus"></i></div></div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Zona VIP" loading="lazy"/><div class="gal-ov"><i class="fa-solid fa-magnifying-glass-plus"></i></div></div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1496024840928-4c417adf211d?w=400&q=80" alt="Luces y pista" loading="lazy"/><div class="gal-ov"><i class="fa-solid fa-magnifying-glass-plus"></i></div></div>
+      <div class="gal-item"><img src="https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?w=400&q=80" alt="Clientes bailando" loading="lazy"/><div class="gal-ov"><i class="fa-solid fa-magnifying-glass-plus"></i></div></div>
+    </div>
+    <div style="text-align:center;margin-top:36px;" class="rv">
+      <a href="views/galeria.html" class="btn btn-outline"><i class="fa-solid fa-images"></i>Ver Galería Completa</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── VIDEOS ─────────────────────────────────────────────────── -->
+<section class="sec" id="videos">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">En Acción</span>
+      <h2 class="sec-title">Videos de <span class="g">Nuestras Noches</span></h2>
+    </div>
+    <div class="video-grid">
+      <div class="vid-wrap rv d1">
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&rel=0" title="Video Disco X" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="vid-wrap rv d2">
+        <iframe src="https://www.youtube.com/embed/kffacxfA7G4?controls=1&rel=0" title="Video Evento" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="vid-wrap rv d3">
+        <iframe src="https://www.youtube.com/embed/3tmd-ClpJxA?controls=1&rel=0" title="Video DJ" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+    <p class="rv" style="text-align:center;font-size:11px;color:var(--txt-3);margin-top:16px;letter-spacing:1px;">* Reemplaza los IDs de YouTube con tus videos reales.</p>
+  </div>
+</section>
+
+<!-- ── SEGURIDAD ──────────────────────────────────────────────── -->
+<section class="sec sec-dark" id="seguridad">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Tu Tranquilidad Primero</span>
+      <h2 class="sec-title">La Mejor <span class="g">Seguridad</span> de Huanta</h2>
+      <p class="sec-sub">Nos tomamos la seguridad de nuestros clientes con la seriedad que merece</p>
+    </div>
+    <div class="security-grid">
+      <div class="sec-card rv d1">
+        <i class="fa-solid fa-camera-cctv"></i>
+        <h4>CCTV 24/7</h4>
+        <p>Más de 32 cámaras HD distribuidas en todo el local. Monitoreo en tiempo real permanente.</p>
+      </div>
+      <div class="sec-card rv d2">
+        <i class="fa-solid fa-user-shield"></i>
+        <h4>Personal Capacitado</h4>
+        <p>Equipo de seguridad entrenado profesionalmente. Protocolo estricto de ingreso y control.</p>
+      </div>
+      <div class="sec-card rv d3">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <h4>Salidas de Emergencia</h4>
+        <p>Rutas de evacuación señalizadas, iluminación de emergencia y simulacros periódicos.</p>
+      </div>
+      <div class="sec-card rv d4">
+        <i class="fa-solid fa-kit-medical"></i>
+        <h4>Primeros Auxilios</h4>
+        <p>Botiquín completo y personal con formación en primeros auxilios disponible toda la noche.</p>
+      </div>
+      <div class="sec-card rv d1">
+        <i class="fa-solid fa-door-open"></i>
+        <h4>Control de Ingreso</h4>
+        <p>Verificación de edad en puerta. Solo mayores de 18 años. Identificación requerida.</p>
+      </div>
+      <div class="sec-card rv d2">
+        <i class="fa-solid fa-ban"></i>
+        <h4>Tolerancia Cero</h4>
+        <p>Política estricta: cero sustancias prohibidas, cero violencia, cero acoso. Sin excepciones.</p>
+      </div>
+      <div class="sec-card rv d3">
+        <i class="fa-solid fa-radio"></i>
+        <h4>Comunicación Interna</h4>
+        <p>Radios en todo el personal de seguridad para respuesta inmediata ante cualquier situación.</p>
+      </div>
+      <div class="sec-card rv d4">
+        <i class="fa-solid fa-car"></i>
+        <h4>Estacionamiento Vigilado</h4>
+        <p>Playa de estacionamiento privada con vigilancia permanente para los clientes de Disco X.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DRESS CODE ─────────────────────────────────────────────── -->
+<section class="sec sec-darker" id="dresscode">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Viste para la Ocasión</span>
+      <h2 class="sec-title">Código de <span class="g">Vestimenta</span></h2>
+      <p class="sec-sub">Cada noche tiene su propia esencia. Prepárate para brillar.</p>
+    </div>
+    <div class="dress-grid">
+      <div class="dress-card rv d1">
+        <span class="dress-icon"><i class="fa-solid fa-shirt"></i></span>
+        <div class="dress-night">Noche Casual Premium</div>
+        <p class="dress-desc">Ropa casual elegante. Jeans oscuros, polo o camisa. Zapatillas limpias permitidas.</p>
+        <p class="dress-rule">Jueves y Viernes</p>
+      </div>
+      <div class="dress-card rv d2">
+        <span class="dress-icon"><i class="fa-solid fa-vest"></i></span>
+        <div class="dress-night">Noche Formal</div>
+        <p class="dress-desc">Elegancia total. Camisa o blazer para ellos. Vestido o conjunto elegante para ellas.</p>
+        <p class="dress-rule">Sábados — Eventos Especiales</p>
+      </div>
+      <div class="dress-card rv d3">
+        <span class="dress-icon"><i class="fa-solid fa-star"></i></span>
+        <div class="dress-night">Noche Temática</div>
+        <p class="dress-desc">Síguete el tema de la noche. ¡Los mejores outfits tienen sorpresas! Consulta la temática.</p>
+        <p class="dress-rule">Según evento del mes</p>
+      </div>
+    </div>
+    <div class="rv" style="margin-top:28px;padding:20px 28px;background:var(--bg-3);border:1px solid var(--gold-border);border-radius:var(--r-card);display:flex;align-items:flex-start;gap:14px;">
+      <i class="fa-solid fa-circle-exclamation" style="color:var(--gold);font-size:18px;margin-top:2px;flex-shrink:0;"></i>
+      <p style="font-size:13px;color:var(--txt-2);line-height:1.7;"><strong style="color:var(--txt-1);">No permitido en ninguna noche:</strong> Bermudas, chinelas, ropa deportiva, camisetas sin mangas (hombres), ropa sucia o rota. La administración se reserva el derecho de admisión.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIOS ────────────────────────────────────────────── -->
+<section class="sec" id="testimonios">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Lo Que Dicen</span>
+      <h2 class="sec-title">Clientes <span class="g">Satisfechos</span></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card rv d1">
+        <div class="testi-q">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-txt">La mejor discoteca que he pisado en toda la región de Ayacucho. El servicio VIP es otro nivel, los mozos súper atentos y la música perfecta toda la noche.</p>
+        <div class="testi-auth">
+          <div class="testi-av">C</div>
+          <div><h5>Carlos Mendoza</h5><span>Cliente VIP — Huanta</span></div>
+        </div>
+      </div>
+      <div class="testi-card rv d2">
+        <div class="testi-q">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-txt">Vine para mi cumpleaños con 15 amigos. El paquete de cumpleaños estuvo increíble, mesa decorada, sorpresa y todo. Sin duda volvemos siempre a Disco X.</p>
+        <div class="testi-auth">
+          <div class="testi-av">V</div>
+          <div><h5>Valeria Torres</h5><span>Cumpleañera — Ayacucho</span></div>
+        </div>
+      </div>
+      <div class="testi-card rv d3">
+        <div class="testi-q">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-txt">El sonido es de primer nivel nacional. Toqué como DJ invitado y quedé impresionado con el equipo. La gente de Huanta sabe disfrutar. ¡Disco X es diferente!</p>
+        <div class="testi-auth">
+          <div class="testi-av">R</div>
+          <div><h5>Ricardo Palomino</h5><span>DJ Invitado — Lima</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ────────────────────────────────────────────────────── -->
+<section class="sec sec-dark" id="faq">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Preguntas Frecuentes</span>
+      <h2 class="sec-title">¿Tienes <span class="g">Dudas?</span></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">¿Cuál es el horario de Disco X? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-a"><div class="faq-a-inner">Abrimos viernes, sábados y domingos a partir de las 10:00 PM. Los domingos cerramos a las 2:00 AM, y los viernes y sábados hasta las 4:00–5:00 AM. En eventos especiales el horario puede extenderse.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Cuánto cuesta la entrada? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-a"><div class="faq-a-inner">La entrada general varía según el evento. En noches regulares está entre S/15 y S/25. En eventos especiales con DJ nacional el precio varía. Consulta siempre por WhatsApp o sigue nuestras redes sociales para los precios exactos de cada noche.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Cómo reservo una mesa VIP? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-a"><div class="faq-a-inner">Puedes reservar directamente por WhatsApp al 901 267 943 o usando nuestro formulario online en la sección Reservas. Se requiere un adelanto para confirmar la reserva. Te recomendamos reservar con al menos 48 horas de anticipación, especialmente en eventos especiales.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Hay estacionamiento disponible? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-a"><div class="faq-a-inner">Sí, contamos con estacionamiento privado vigilado con capacidad limitada. Es gratuito para clientes. Recomendamos llegar temprano los fines de semana ya que se llena rápido. También hay estacionamiento en la vía pública cerca del local.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Qué edad mínima se requiere para ingresar? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-a"><div class="faq-a-inner">La edad mínima es 18 años. Se verifica obligatoriamente en la puerta. Debes traer tu DNI o documento de identidad vigente. Sin documento no hay ingreso, sin excepciones. Esto es para la seguridad de todos.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Puedo celebrar mi cumpleaños en Disco X? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-a"><div class="faq-a-inner">¡Por supuesto! Tenemos paquetes especiales de cumpleaños que incluyen mesa decorada, pastel, botellas y sorpresas exclusivas. El cumpleañero entra sin costo. Contáctanos con anticipación para coordinar todos los detalles y personalizar tu celebración.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Tienen servicio de seguridad? <i class="fa-solid fa-plus"></i></button>
+        <div class="faq-a"><div class="faq-a-inner">Sí, contamos con la mejor seguridad de Huanta. Tenemos más de 32 cámaras HD, personal de seguridad entrenado, control estricto de ingreso, primeros auxilios disponibles y política de tolerancia cero ante cualquier incidente. Tu tranquilidad es nuestra prioridad.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEWSLETTER ─────────────────────────────────────────────── -->
+<section class="sec" style="padding:70px 0;">
+  <div class="cx">
+    <div class="newsletter-wrap rv">
+      <span class="eyebrow" style="justify-content:center;">No Te Pierdas Nada</span>
+      <h2 class="sec-title" style="text-align:center;">Suscríbete y <span class="g">Entérate Primero</span></h2>
+      <p class="sec-sub" style="text-align:center;">Eventos exclusivos, promos anticipadas y sorpresas solo para suscriptores.</p>
+      <form class="newsletter-form" id="newsletter-form">
+        <input type="email" name="email" placeholder="tu@correo.com" class="newsletter-input" required/>
+        <button type="submit" class="btn btn-gold"><i class="fa-solid fa-paper-plane"></i>Suscribirme</button>
+      </form>
+      <p style="font-size:11px;color:var(--txt-3);text-align:center;margin-top:12px;">Sin spam. Solo lo mejor de Disco X.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── UBICACIÓN ──────────────────────────────────────────────── -->
+<section class="sec sec-dark" id="ubicacion">
+  <div class="cx">
+    <div class="loc-grid">
+      <div class="rv-l">
+        <span class="eyebrow">Encuéntranos</span>
+        <div class="loc-info">
+          <h3>Nuestra Ubicación</h3>
+          <div class="dv"><div class="dv-line"></div><div class="dv-gem"></div><div class="dv-line"></div></div>
+          <div class="loc-item">
+            <i class="fa-solid fa-location-dot loc-ic"></i>
+            <div class="loc-tx"><strong>Dirección</strong><p>Jr. Lima Cdra. 3, Huanta<br>Ayacucho, Perú<br><em style="font-size:11px;color:var(--txt-3);">Zona céntrica — fácil acceso</em></p></div>
+          </div>
+          <div class="loc-item">
+            <i class="fa-solid fa-clock loc-ic"></i>
+            <div class="loc-tx"><strong>Horarios</strong><p>Viernes: 10 PM – 4 AM<br>Sábado: 10 PM – 5 AM<br>Domingo: 9 PM – 2 AM<br>Eventos especiales: Consultar</p></div>
+          </div>
+          <div class="loc-item">
+            <i class="fa-brands fa-whatsapp loc-ic"></i>
+            <div class="loc-tx"><strong>WhatsApp</strong><p><a href="https://wa.me/51901267943" style="color:var(--gold);">+51 901 267 943</a><br>Reservas y consultas</p></div>
+          </div>
+          <div class="loc-item">
+            <i class="fa-solid fa-car loc-ic"></i>
+            <div class="loc-tx"><strong>Estacionamiento</strong><p>Playa privada con vigilancia<br>Gratuito para clientes</p></div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;">
+            <a href="https://wa.me/51901267943" class="btn btn-gold btn-sm" target="_blank"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+            <a href="views/reservas.html" class="btn btn-outline btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+      <div class="map-box rv-r">
+        <!-- Reemplaza con tu iframe real de Google Maps -->
+        <!-- <iframe src="https://www.google.com/maps/embed?pb=..." allowfullscreen loading="lazy"></iframe> -->
+        <div class="map-box-ph">
+          <i class="fa-solid fa-map-location-dot" style="font-size:44px;color:rgba(212,175,55,.25);"></i>
+          <p style="font-size:11px;color:var(--txt-3);letter-spacing:2px;text-transform:uppercase;margin-top:8px;">Inserta tu Google Maps aquí</p>
+          <a href="https://maps.google.com/?q=Huanta,Ayacucho,Peru" target="_blank" class="btn btn-outline btn-sm" style="margin-top:12px;">Ver en Google Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REDES SOCIALES ─────────────────────────────────────────── -->
+<section class="sec" style="padding:60px 0;">
+  <div class="cx" style="text-align:center;">
+    <div class="rv">
+      <span class="eyebrow" style="justify-content:center;">Síguenos</span>
+      <h2 class="sec-title" style="margin-bottom:10px;">Nuestras <span class="g">Redes</span></h2>
+      <p class="sec-sub" style="margin-bottom:32px;">Fotos, videos y actualizaciones en tiempo real de cada noche</p>
+    </div>
+    <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;" class="rv d2">
+      <a href="#" class="btn btn-ghost"><i class="fa-brands fa-instagram"></i>Instagram</a>
+      <a href="#" class="btn btn-ghost"><i class="fa-brands fa-tiktok"></i>TikTok</a>
+      <a href="#" class="btn btn-ghost"><i class="fa-brands fa-facebook-f"></i>Facebook</a>
+      <a href="#" class="btn btn-ghost"><i class="fa-brands fa-youtube"></i>YouTube</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="ft-glow"></div>
+  <div class="cx">
+    <div class="ft-main">
+      <div class="ft-brand">
+        <h3>DISCO X</h3>
+        <p>La experiencia nocturna más exclusiva de Huanta. 2 pisos, DJs nacionales, zona VIP y la mejor seguridad. Vive la noche premium.</p>
+        <div class="ft-socials">
+          <a href="#" class="ft-soc"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://wa.me/51901267943" class="ft-soc"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="ft-col">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="views/nosotros.html">Nosotros</a></li>
+          <li><a href="views/eventos.html">Eventos</a></li>
+          <li><a href="views/galeria.html">Galería</a></li>
+          <li><a href="views/vip.html">Zona VIP</a></li>
+          <li><a href="views/reservas.html">Reservas</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Servicios</h4>
+        <ul>
+          <li><a href="views/vip.html">Mesa VIP</a></li>
+          <li><a href="views/reservas.html">Cumpleaños</a></li>
+          <li><a href="views/reservas.html">Evento Privado</a></li>
+          <li><a href="views/reservas.html">Promoción Escolar</a></li>
+          <li><a href="views/eventos.html">Conciertos</a></li>
+          <li><a href="#combos">Combos y Jarras</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Contacto</h4>
+        <p><i class="fa-solid fa-location-dot" style="color:var(--gold);margin-right:8px;"></i>Jr. Lima Cdra. 3, Huanta</p>
+        <p><i class="fa-brands fa-whatsapp" style="color:var(--gold);margin-right:8px;"></i>901 267 943</p>
+        <p><i class="fa-solid fa-clock" style="color:var(--gold);margin-right:8px;"></i>Vie–Dom: 10PM →</p>
+        <p style="margin-top:14px;font-size:11px;color:var(--txt-3);">+18 · Beber con responsabilidad</p>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <p>© 2025 Disco X · Huanta, Ayacucho · Todos los derechos reservados</p>
+      <p>Diseñado con <span style="color:var(--gold);">♦</span> Agencia Digital Premium</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ── WHATSAPP ────────────────────────────────────────────────── -->
+<div class="wa-float">
+  <div class="wa-tip">¿Reservas? ¡Escríbenos! 🎉</div>
+  <a href="https://wa.me/51901267943?text=Hola,%20quiero%20reservar%20en%20Disco%20X" class="wa-btn" target="_blank" rel="noopener">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
