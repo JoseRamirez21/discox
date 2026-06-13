@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Eventos — Disco X | Conciertos, DJs y Fiestas en Huanta</title>
+  <meta name="description" content="Todos los eventos de Disco X Huanta. Conciertos, DJs nacionales, fiestas temáticas, countdown en vivo y reservas online."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/styles.css"/>
+  <style>
+    /* ── PAGE HERO ──────────────────────────────────────────── */
+    .page-hero{min-height:65vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding-top:76px}
+    .ph-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(212,175,55,.08) 0%,transparent 65%),linear-gradient(180deg,rgba(3,3,3,.3) 0%,var(--bg-0) 100%)}
+    .ph-img{position:absolute;inset:0;z-index:0}
+    .ph-img img{width:100%;height:100%;object-fit:cover;opacity:.2;filter:saturate(.5)}
+    .ph-content{position:relative;z-index:2}
+    .breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--txt-3);margin-bottom:20px}
+    .breadcrumb a{color:var(--txt-3);transition:color var(--t1)}.breadcrumb a:hover{color:var(--gold)}.breadcrumb span{color:var(--gold)}
+    .ph-title{font-family:var(--font-display);font-size:clamp(42px,7vw,88px);font-weight:900;line-height:.95;text-transform:uppercase;color:var(--txt-1);margin-bottom:14px}
+    .ph-title .g{color:var(--gold);filter:drop-shadow(0 0 24px rgba(212,175,55,.35))}
+    .ph-sub{font-family:var(--font-serif);font-size:clamp(15px,2vw,20px);font-style:italic;color:var(--txt-2);font-weight:300}
+
+    /* ── FILTROS ────────────────────────────────────────────── */
+    .filters{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:48px}
+    .filter-btn{font-family:var(--font-sans);font-size:9.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:10px 22px;border-radius:40px;border:1px solid var(--gold-border);background:transparent;color:var(--txt-2);cursor:none;transition:all var(--t1)}
+    .filter-btn:hover,.filter-btn.active{background:var(--gold);color:var(--bg-0);border-color:var(--gold);box-shadow:var(--gold-glow-sm)}
+
+    /* ── EVENTO FEATURED GRANDE ─────────────────────────────── */
+    .feat-event{border-radius:var(--r-card);overflow:hidden;border:1px solid var(--gold-border);background:var(--bg-2);display:grid;grid-template-columns:1.1fr 1fr;transition:box-shadow var(--t2)}
+    .feat-event:hover{box-shadow:0 16px 56px rgba(0,0,0,.55),0 0 40px rgba(212,175,55,.1)}
+    .feat-event-img{position:relative;overflow:hidden;min-height:460px}
+    .feat-event-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.72);transition:filter var(--t3),transform var(--t3)}
+    .feat-event:hover .feat-event-img img{filter:brightness(.88);transform:scale(1.03)}
+    .feat-event-tag{position:absolute;top:18px;left:18px;background:var(--gold);color:var(--bg-0);font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 13px;border-radius:3px}
+    .feat-event-live{position:absolute;top:18px;right:18px;display:flex;align-items:center;gap:7px;background:rgba(200,40,40,.85);backdrop-filter:blur(8px);padding:5px 12px;border-radius:4px;font-size:8px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#fff}
+    .feat-event-live-dot{width:5px;height:5px;background:#ff4444;border-radius:50%;animation:pulse 1.2s ease-in-out infinite}
+    .feat-event-body{padding:40px 36px;display:flex;flex-direction:column;justify-content:center}
+    .feat-event-body .ev-date{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+    .feat-event-body h2{font-family:var(--font-display);font-size:clamp(24px,3vw,36px);font-weight:700;color:var(--txt-1);line-height:1.15;margin-bottom:10px}
+    .feat-event-body .ev-desc{font-size:13.5px;color:var(--txt-2);line-height:1.78;margin-bottom:24px}
+    .feat-event-meta{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+    .fem-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--txt-2)}
+    .fem-item i{color:var(--gold);width:16px;flex-shrink:0}
+    /* Countdown en card */
+    .ev-cd{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap}
+    .ev-cd-box{background:var(--bg-3);border:1px solid var(--gold-border);border-radius:8px;padding:12px 14px;text-align:center;min-width:60px}
+    .ev-cd-n{font-family:var(--font-display);font-size:26px;font-weight:900;color:var(--gold);line-height:1;display:block;filter:drop-shadow(0 0 6px rgba(212,175,55,.3))}
+    .ev-cd-l{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--txt-3);margin-top:3px;display:block}
+
+    /* ── GRILLA DE EVENTOS ──────────────────────────────────── */
+    .events-masonry{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .ev-item{border-radius:var(--r-card);overflow:hidden;background:var(--bg-2);border:1px solid var(--gold-border);transition:transform var(--t2) var(--ease),box-shadow var(--t2)}
+    .ev-item:hover{transform:translateY(-8px);box-shadow:0 14px 50px rgba(0,0,0,.5),0 0 28px rgba(212,175,55,.08)}
+    .ev-item-img{position:relative;overflow:hidden}
+    .ev-item-img img{width:100%;aspect-ratio:16/9;object-fit:cover;filter:brightness(.7) saturate(.88);transition:transform var(--t3),filter var(--t2)}
+    .ev-item:hover .ev-item-img img{transform:scale(1.06);filter:brightness(.9) saturate(1)}
+    .ev-item-tag{position:absolute;top:12px;left:12px;font-size:7.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 11px;border-radius:3px}
+    .tag-nacional{background:rgba(212,175,55,.9);color:var(--bg-0)}
+    .tag-tematica{background:rgba(139,0,200,.7);color:#fff}
+    .tag-djnight{background:rgba(0,120,200,.7);color:#fff}
+    .tag-especial{background:rgba(200,40,40,.8);color:#fff}
+    .tag-cumple{background:rgba(212,175,55,.15);border:1px solid var(--gold-border);color:var(--gold)}
+    .ev-item-agotado{position:absolute;inset:0;background:rgba(3,3,3,.7);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,.6);text-transform:uppercase}
+    .ev-item-body{padding:22px}
+    .ev-item-date{font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:7px;display:flex;align-items:center;gap:7px}
+    .ev-item-name{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--txt-1);margin-bottom:7px;line-height:1.2}
+    .ev-item-desc{font-size:12.5px;color:var(--txt-2);line-height:1.62;margin-bottom:16px}
+    .ev-item-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .ev-price{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--gold)}
+    .ev-price small{font-size:10px;color:var(--txt-3);font-family:var(--font-sans);font-weight:300}
+
+    /* ── ARTISTAS NACIONALES ────────────────────────────────── */
+    .artists-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+    .artist-card{border-radius:var(--r-card);overflow:hidden;background:var(--bg-2);border:1px solid var(--gold-border);position:relative;transition:transform var(--t2) var(--ease),box-shadow var(--t2)}
+    .artist-card:hover{transform:translateY(-7px);box-shadow:0 12px 44px rgba(0,0,0,.45),0 0 26px rgba(212,175,55,.08)}
+    .artist-img{aspect-ratio:3/4;overflow:hidden;position:relative}
+    .artist-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.35) brightness(.72);transition:filter var(--t3),transform var(--t3)}
+    .artist-card:hover .artist-img img{filter:grayscale(0) brightness(.9);transform:scale(1.05)}
+    .artist-ov{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(3,3,3,.96) 0%,transparent 100%);padding:24px 18px 18px}
+    .artist-origin{font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+    .artist-name{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--txt-1)}
+    .artist-genre{font-family:var(--font-serif);font-size:13px;font-style:italic;color:var(--txt-2);margin-top:3px}
+    .artist-date{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(212,175,55,.7);margin-top:6px}
+    .artist-soc{display:flex;gap:7px;margin-top:10px}
+    .artist-soc a{width:26px;height:26px;border-radius:50%;border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--gold);transition:all var(--t1)}
+    .artist-soc a:hover{background:var(--gold);color:var(--bg-0)}
+
+    /* ── CALENDARIO VISUAL ──────────────────────────────────── */
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:28px}
+    .cal-header{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--txt-3);text-align:center;padding:8px 4px}
+    .cal-day{aspect-ratio:1/1;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:none;transition:all var(--t1);position:relative;font-size:13px;color:var(--txt-2);background:var(--bg-3);border:1px solid transparent}
+    .cal-day.empty{background:transparent;border:none}
+    .cal-day.has-event{background:rgba(212,175,55,.08);border-color:rgba(212,175,55,.25);color:var(--gold);font-weight:600}
+    .cal-day.has-event:hover{background:rgba(212,175,55,.15);transform:scale(1.05)}
+    .cal-day.today{background:var(--gold);color:var(--bg-0);font-weight:700;box-shadow:var(--gold-glow-sm)}
+    .cal-dot{width:4px;height:4px;background:var(--gold);border-radius:50%;position:absolute;bottom:5px}
+    .cal-month{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--txt-1);letter-spacing:2px;margin-bottom:16px}
+
+    /* ── PRÓXIMOS EVENTOS LISTA ─────────────────────────────── */
+    .upcoming-list{display:flex;flex-direction:column;gap:14px}
+    .upcoming-item{display:flex;align-items:center;gap:20px;padding:18px 22px;border-radius:var(--r-card);background:var(--bg-2);border:1px solid var(--gold-border);transition:all var(--t2) var(--ease)}
+    .upcoming-item:hover{transform:translateX(6px);border-color:rgba(212,175,55,.4);box-shadow:0 4px 24px rgba(0,0,0,.3)}
+    .upcoming-date-box{min-width:58px;text-align:center;background:var(--bg-3);border:1px solid var(--gold-border);border-radius:9px;padding:10px 8px;flex-shrink:0}
+    .udb-day{font-family:var(--font-display);font-size:24px;font-weight:900;color:var(--gold);line-height:1}
+    .udb-month{font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:var(--txt-3)}
+    .upcoming-info{flex:1}
+    .upcoming-info h4{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--txt-1);margin-bottom:3px;letter-spacing:.5px}
+    .upcoming-info p{font-size:12px;color:var(--txt-2)}
+    .upcoming-meta{display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap}
+    .upcoming-time{font-size:11px;color:var(--txt-3);letter-spacing:1px}
+    .upcoming-price{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--gold)}
+
+    /* ── REGLAS / INFO EVENTO ───────────────────────────────── */
+    .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .info-card{padding:24px;border-radius:var(--r-card);background:var(--bg-2);border:1px solid var(--gold-border);text-align:center;transition:all var(--t2) var(--ease)}
+    .info-card:hover{transform:translateY(-4px)}
+    .info-card i{font-size:30px;color:var(--gold);margin-bottom:12px;filter:drop-shadow(0 0 7px rgba(212,175,55,.25))}
+    .info-card h4{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--txt-1);letter-spacing:1px;margin-bottom:7px}
+    .info-card p{font-size:12px;color:var(--txt-2);line-height:1.6}
+
+    /* Responsive */
+    @media(max-width:1024px){
+      .feat-event{grid-template-columns:1fr}
+      .feat-event-img{min-height:280px}
+      .events-masonry{grid-template-columns:1fr 1fr}
+      .artists-grid{grid-template-columns:repeat(2,1fr)}
+      .info-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:768px){
+      .events-masonry{grid-template-columns:1fr}
+      .artists-grid{grid-template-columns:1fr 1fr}
+      .upcoming-item{flex-wrap:wrap;gap:12px}
+      .upcoming-meta{width:100%}
+      .info-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:480px){
+      .artists-grid{grid-template-columns:1fr}
+      .cal-grid{gap:3px}
+      .cal-day{font-size:11px}
+    }
+  </style>
+</head>
+<body>
+
+<div id="cx-dot"></div>
+<div id="cx-ring"></div>
+<div id="sp-bar"></div>
+<div id="noise"></div>
+<canvas id="px-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35"></canvas>
+
+<!-- AGE GATE -->
+<div id="age-gate">
+  <div class="ag-logo">X</div>
+  <h2>Verificación de Edad</h2>
+  <p>Disco X es un espacio exclusivo para mayores de 18 años.</p>
+  <div class="ag-btns">
+    <button id="ag-yes" class="btn btn-gold btn-lg">Tengo 18 o más</button>
+    <button id="ag-no" class="btn btn-outline">Soy menor de edad</button>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="nav on" role="navigation">
+  <div class="nav-in">
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-emblem"><span>X</span></div>
+      <div><span class="nav-name">Disco X</span><span class="nav-sub">Huanta · Premium</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="eventos.html" class="active">Eventos</a>
+      <a href="galeria.html">Galería</a>
+      <a href="vip.html">VIP</a>
+      <a href="reservas.html" class="nav-cta">Reservar Mesa</a>
+    </div>
+    <button class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-menu">
+  <a href="../index.html">Inicio</a>
+  <a href="nosotros.html">Nosotros</a>
+  <a href="eventos.html">Eventos</a>
+  <a href="galeria.html">Galería</a>
+  <a href="vip.html">VIP</a>
+  <a href="reservas.html">Reservas</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="ph-img">
+    <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=1400&q=80" alt="Eventos Disco X"/>
+  </div>
+  <div class="ph-bg"></div>
+  <div class="hc hc-tl" style="position:absolute;top:28px;left:28px;"></div>
+  <div class="hc hc-tr" style="position:absolute;top:28px;right:28px;"></div>
+  <div class="ph-content">
+    <div class="breadcrumb">
+      <a href="../index.html">Inicio</a>
+      <i class="fa-solid fa-chevron-right" style="font-size:7px;"></i>
+      <span>Eventos</span>
+    </div>
+    <h1 class="ph-title">Nuestra <span class="g">Agenda</span></h1>
+    <p class="ph-sub">Conciertos, DJs nacionales, fiestas temáticas y mucho más</p>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" style="position:relative;z-index:2;">
+  <div class="ticker-track">
+    <span class="ticker-item"><i class="fa-solid fa-star"></i>PRÓXIMO EVENTO: 28 DE JUNIO — NOCHE DE ANIVERSARIO</span>
+    <span class="ticker-item"><i class="fa-solid fa-music"></i>DJS NACIONALES CADA FIN DE SEMANA</span>
+    <span class="ticker-item"><i class="fa-solid fa-ticket"></i>RESERVA TU ENTRADA AL 901 267 943</span>
+    <span class="ticker-item"><i class="fa-solid fa-crown"></i>ZONA VIP DISPONIBLE — CUPOS LIMITADOS</span>
+    <span class="ticker-item"><i class="fa-solid fa-star"></i>PRÓXIMO EVENTO: 28 DE JUNIO — NOCHE DE ANIVERSARIO</span>
+    <span class="ticker-item"><i class="fa-solid fa-music"></i>DJS NACIONALES CADA FIN DE SEMANA</span>
+    <span class="ticker-item"><i class="fa-solid fa-ticket"></i>RESERVA TU ENTRADA AL 901 267 943</span>
+    <span class="ticker-item"><i class="fa-solid fa-crown"></i>ZONA VIP DISPONIBLE — CUPOS LIMITADOS</span>
+  </div>
+</div>
+
+<!-- EVENTO DESTACADO + COUNTDOWN -->
+<section class="sec" id="proximo">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">No Te Lo Pierdas</span>
+      <h2 class="sec-title">Próximo <span class="g">Gran Evento</span></h2>
+    </div>
+    <div class="feat-event rv">
+      <div class="feat-event-img">
+        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=900&q=80" alt="Noche de Aniversario Disco X"/>
+        <div class="feat-event-tag">Evento Especial</div>
+        <div class="feat-event-live"><span class="feat-event-live-dot"></span>Próximo Evento</div>
+      </div>
+      <div class="feat-event-body">
+        <div class="ev-date"><i class="fa-solid fa-calendar"></i>&nbsp;Sábado 28 de Junio, 2025</div>
+        <h2>Noche de Aniversario<br><span style="color:var(--gold);">Disco X</span></h2>
+        <p class="ev-desc">El evento más esperado del año. Celebramos otro aniversario con el mejor DJ nacional, open bar la primera hora, show de luces cinematográfico, sorpresas VIP y los combos más exclusivos de nuestra historia. Cupos estrictamente limitados.</p>
+        <div class="feat-event-meta">
+          <div class="fem-item"><i class="fa-solid fa-clock"></i><span>Apertura puertas: 10:00 PM — hasta las 5:00 AM</span></div>
+          <div class="fem-item"><i class="fa-solid fa-location-dot"></i><span>Jr. Lima Cdra. 3, Huanta, Ayacucho</span></div>
+          <div class="fem-item"><i class="fa-solid fa-headphones"></i><span>DJ Nacional invitado + DJ residentes</span></div>
+          <div class="fem-item"><i class="fa-solid fa-champagne-glasses"></i><span>Open bar primera hora para todos</span></div>
+          <div class="fem-item"><i class="fa-solid fa-shirt"></i><span>Vestimenta: Formal / Elegante</span></div>
+          <div class="fem-item"><i class="fa-solid fa-ticket"></i><span>General: S/ 30 · VIP: desde S/ 180</span></div>
+        </div>
+        <!-- Countdown real -->
+        <div class="ev-cd" id="countdown" data-date="2025-06-28T22:00:00"></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="reservas.html" class="btn btn-gold"><i class="fa-solid fa-ticket"></i>Reservar Entrada</a>
+          <a href="vip.html"      class="btn btn-outline"><i class="fa-solid fa-crown"></i>Zona VIP</a>
+          <a href="https://wa.me/51901267943?text=Hola,%20quiero%20info%20del%20Aniversario%20Disco%20X" class="btn btn-ghost" target="_blank"><i class="fa-brands fa-whatsapp"></i>Consultar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS EVENTOS -->
+<section class="stats-sec">
+  <div class="cx">
+    <div class="stats-grid">
+      <div class="stat rv d1"><div class="stat-n"><span data-count="150">0</span><sup>+</sup></div><span class="stat-l">Eventos Realizados</span></div>
+      <div class="stat rv d2"><div class="stat-n"><span data-count="48">0</span><sup>+</sup></div><span class="stat-l">DJs Nacionales</span></div>
+      <div class="stat rv d3"><div class="stat-n"><span data-count="12">0</span></div><span class="stat-l">Fiestas Temáticas / Año</span></div>
+      <div class="stat rv d4"><div class="stat-n"><span data-count="4">0</span></div><span class="stat-l">Noches / Semana</span></div>
+      <div class="stat rv d5"><div class="stat-n"><span data-count="500">0</span><sup>+</sup></div><span class="stat-l">Cap. por Evento</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FILTROS + TODOS LOS EVENTOS -->
+<section class="sec sec-dark" id="agenda">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Agenda Completa</span>
+      <h2 class="sec-title">Todos los <span class="g">Eventos</span></h2>
+      <p class="sec-sub">Filtra por tipo de noche y encuentra la que más te llama</p>
+    </div>
+    <!-- Filtros -->
+    <div class="filters rv">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="nacional">DJ Nacional</button>
+      <button class="filter-btn" data-filter="tematica">Fiesta Temática</button>
+      <button class="filter-btn" data-filter="djnight">DJ Night</button>
+      <button class="filter-btn" data-filter="especial">Evento Especial</button>
+      <button class="filter-btn" data-filter="cumple">Cumpleaños</button>
+    </div>
+
+    <div class="events-masonry" id="events-grid">
+
+      <!-- Evento 1 — Nacional -->
+      <div class="ev-item rv d1" data-type="especial">
+        <div class="ev-item-img">
+          <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80" alt="Noche de Aniversario"/>
+          <span class="ev-item-tag tag-especial">Aniversario</span>
+        </div>
+        <div class="ev-item-body">
+          <div class="ev-item-date"><i class="fa-solid fa-calendar"></i>Sábado 28 · Jun · 2025</div>
+          <h3 class="ev-item-name">Noche de Aniversario</h3>
+          <p class="ev-item-desc">El evento más grande del año. DJ nacional, open bar y sorpresas VIP exclusivas para esta noche especial.</p>
+          <div class="ev-item-footer">
+            <div class="ev-price">S/ 30 <small>general</small></div>
+            <a href="reservas.html" class="btn btn-gold btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evento 2 — Temática -->
+      <div class="ev-item rv d2" data-type="tematica">
+        <div class="ev-item-img">
+          <img src="https://images.unsplash.com/photo-1598387180432-5d6e7c0b5a80?w=600&q=80" alt="Red & Gold Night"/>
+          <span class="ev-item-tag tag-tematica">Fiesta Temática</span>
+        </div>
+        <div class="ev-item-body">
+          <div class="ev-item-date"><i class="fa-solid fa-calendar"></i>Viernes 20 · Jun · 2025</div>
+          <h3 class="ev-item-name">Red &amp; Gold Night</h3>
+          <p class="ev-item-desc">Código de vestimenta: rojo y dorado. VIP con beneficios para los primeros 50. Fotógrafo oficial toda la noche.</p>
+          <div class="ev-item-footer">
+            <div class="ev-price">S/ 20 <small>general</small></div>
+            <a href="reservas.html" class="btn btn-outline btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evento 3 — DJ Nacional -->
+      <div class="ev-item rv d3" data-type="nacional">
+        <div class="ev-item-img">
+          <img src="https://images.unsplash.com/photo-1571266028243-e8a7270ed42c?w=600&q=80" alt="DJ Nacional"/>
+          <span class="ev-item-tag tag-nacional">DJ Nacional</span>
+        </div>
+        <div class="ev-item-body">
+          <div class="ev-item-date"><i class="fa-solid fa-calendar"></i>Sábado 5 · Jul · 2025</div>
+          <h3 class="ev-item-name">DJ Invitado Nacional</h3>
+          <p class="ev-item-desc">Artista de Lima en el escenario de Disco X. Una noche histórica para Huanta. Cupos muy limitados — reserva ya.</p>
+          <div class="ev-item-footer">
+            <div class="ev-price">S/ 35 <small>general</small></div>
+            <a href="reservas.html" class="btn btn-gold btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evento 4 — DJ Night -->
+      <div class="ev-item rv d1" data-type="djnight">
+        <div class="ev-item-img">
+          <img src="https://images.unsplash.com/photo-1429514513361-8fa32282fd5f?w=600&q=80" alt="DJ Night Shadow X"/>
+          <span class="ev-item-tag tag-djnight">DJ Night</span>
+        </div>
+        <div class="ev-item-body">
+          <div class="ev-item-date"><i class="fa-solid fa-calendar"></i>Viernes 11 · Jul · 2025</div>
+          <h3 class="ev-item-name">DJ Shadow X — Noche Urbana</h3>
+          <p class="ev-item-desc">La noche urbana más esperada. Reggaeton, trap y urbano en su máxima expresión con DJ Shadow X en los platos.</p>
+          <div class="ev-item-footer">
+            <div class="ev-price">S/ 20 <small>general</small></div>
+            <a href="reservas.html" class="btn btn-outline btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evento 5 — Temática -->
+      <div class="ev-item rv d2" data-type="tematica">
+        <div class="ev-item-img">
+          <img src="https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?w=600&q=80" alt="Noche Blanca"/>
+          <span class="ev-item-tag tag-tematica">Fiesta Temática</span>
+        </div>
+        <div class="ev-item-body">
+          <div class="ev-item-date"><i class="fa-solid fa-calendar"></i>Sábado 19 · Jul · 2025</div>
+          <h3 class="ev-item-name">All White Night</h3>
+          <p class="ev-item-desc">Viste de blanco de pies a cabeza. La noche más elegante del año con ambiente lounge en toda la disco.</p>
+          <div class="ev-item-footer">
+            <div class="ev-price">S/ 25 <small>general</small></div>
+            <a href="reservas.html" class="btn btn-outline btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evento 6 — Nacional -->
+      <div class="ev-item rv d3" data-type="nacional">
+        <div class="ev-item-img">
+          <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&q=80" alt="Artista Nacional"/>
+          <span class="ev-item-tag tag-nacional">DJ Nacional</span>
+        </div>
+        <div class="ev-item-body">
+          <div class="ev-item-date"><i class="fa-solid fa-calendar"></i>Sábado 26 · Jul · 2025</div>
+          <h3 class="ev-item-name">Fiestas Patrias — DJ Especial</h3>
+          <p class="ev-item-desc">Celebración de Fiestas Patrias con DJ nacional sorpresa, show especial y los mejores combos de la temporada.</p>
+          <div class="ev-item-footer">
+            <div class="ev-price">S/ 35 <small>general</small></div>
+            <a href="reservas.html" class="btn btn-gold btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evento 7 — Cumpleaños -->
+      <div class="ev-item rv d1" data-type="cumple">
+        <div class="ev-item-img">
+          <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=600&q=80" alt="Noche de Cumpleaños"/>
+          <span class="ev-item-tag tag-cumple">Cumpleaños</span>
+        </div>
+        <div class="ev-item-body">
+          <div class="ev-item-date"><i class="fa-solid fa-calendar"></i>Todos los fines de semana</div>
+          <h3 class="ev-item-name">Celebra tu Cumpleaños</h3>
+          <p class="ev-item-desc">Mesa decorada, pastel, botella y sorpresa especial. El cumpleañero entra libre. Reserva con anticipación.</p>
+          <div class="ev-item-footer">
+            <div class="ev-price">Desde S/ 180 <small>paquete</small></div>
+            <a href="reservas.html" class="btn btn-gold btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evento 8 — DJ Night -->
+      <div class="ev-item rv d2" data-type="djnight">
+        <div class="ev-item-img">
+          <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80" alt="DJ Nova Electronic Night"/>
+          <span class="ev-item-tag tag-djnight">DJ Night</span>
+        </div>
+        <div class="ev-item-body">
+          <div class="ev-item-date"><i class="fa-solid fa-calendar"></i>Viernes 1 · Ago · 2025</div>
+          <h3 class="ev-item-name">DJ Nova — Electronic Night</h3>
+          <p class="ev-item-desc">La noche más electrónica de Huanta. House, tech y progressive con DJ Nova para los amantes del sonido electrónico.</p>
+          <div class="ev-item-footer">
+            <div class="ev-price">S/ 20 <small>general</small></div>
+            <a href="reservas.html" class="btn btn-outline btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evento 9 — Temática AGOTADO -->
+      <div class="ev-item rv d3" data-type="tematica">
+        <div class="ev-item-img">
+          <img src="https://images.unsplash.com/photo-1496024840928-4c417adf211d?w=600&q=80" alt="Black Night AGOTADO"/>
+          <span class="ev-item-tag tag-tematica">Fiesta Temática</span>
+          <div class="ev-item-agotado">Agotado</div>
+        </div>
+        <div class="ev-item-body">
+          <div class="ev-item-date"><i class="fa-solid fa-calendar"></i>Sábado 14 · Jun · 2025</div>
+          <h3 class="ev-item-name">Black Night — Código Negro</h3>
+          <p class="ev-item-desc">Viste completamente de negro. La noche más elegante y misteriosa del mes. 100% agotada — sigue nuestra agenda.</p>
+          <div class="ev-item-footer">
+            <div class="ev-price" style="color:var(--txt-3);">Agotado</div>
+            <span class="badge badge-red">SOLD OUT</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ARTISTAS NACIONALES -->
+<section class="sec sec-darker" id="artistas">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Talento Nacional</span>
+      <h2 class="sec-title">Artistas que han pisado <span class="g">Disco X</span></h2>
+      <p class="sec-sub">Los mejores DJs del país eligen Huanta — eligen Disco X</p>
+    </div>
+    <div class="artists-grid">
+      <div class="artist-card rv d1">
+        <div class="artist-img">
+          <img src="https://images.unsplash.com/photo-1571727153934-b9e0059b7ab2?w=400&q=80" alt="DJ Shadow X"/>
+          <div class="artist-ov">
+            <div class="artist-origin">Lima, Perú</div>
+            <div class="artist-name">DJ Shadow X</div>
+            <div class="artist-genre">Reggaeton · Trap · Urbano</div>
+            <div class="artist-date">Residente Permanente</div>
+            <div class="artist-soc">
+              <a href="#"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+              <a href="#"><i class="fa-brands fa-spotify"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="artist-card rv d2">
+        <div class="artist-img">
+          <img src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=400&q=80" alt="DJ Nova"/>
+          <div class="artist-ov">
+            <div class="artist-origin">Lima, Perú</div>
+            <div class="artist-name">DJ Nova</div>
+            <div class="artist-genre">Electronic · House · Tech</div>
+            <div class="artist-date">Residente — Jueves</div>
+            <div class="artist-soc">
+              <a href="#"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+              <a href="#"><i class="fa-brands fa-soundcloud"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="artist-card rv d3">
+        <div class="artist-img">
+          <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&q=80" alt="DJ Kross"/>
+          <div class="artist-ov">
+            <div class="artist-origin">Ayacucho, Perú</div>
+            <div class="artist-name">DJ Kross</div>
+            <div class="artist-genre">Cumbia · Salsa · Latino</div>
+            <div class="artist-date">Próxima fecha: 5 Jul</div>
+            <div class="artist-soc">
+              <a href="#"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="artist-card rv d4">
+        <div class="artist-img">
+          <img src="https://images.unsplash.com/photo-1484665754804-74b091211472?w=400&q=80" alt="DJ Luxe"/>
+          <div class="artist-ov">
+            <div class="artist-origin">Lima, Perú</div>
+            <div class="artist-name">DJ Luxe</div>
+            <div class="artist-genre">R&amp;B · Hip Hop · Afrobeat</div>
+            <div class="artist-date">Residente — Domingos</div>
+            <div class="artist-soc">
+              <a href="#"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+              <a href="#"><i class="fa-brands fa-spotify"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALENDARIO VISUAL -->
+<section class="sec" id="calendario">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Junio 2025</span>
+      <h2 class="sec-title">Calendario de <span class="g">Eventos</span></h2>
+    </div>
+    <div style="max-width:700px;margin:0 auto;" class="rv">
+      <div class="cal-month" style="text-align:center;">JUNIO 2025</div>
+      <div class="cal-grid">
+        <div class="cal-header">LUN</div><div class="cal-header">MAR</div><div class="cal-header">MIÉ</div>
+        <div class="cal-header">JUE</div><div class="cal-header">VIE</div><div class="cal-header">SÁB</div><div class="cal-header">DOM</div>
+        <!-- Semana 1 -->
+        <div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day empty"></div>
+        <div class="cal-day">5</div>
+        <div class="cal-day has-event">6<div class="cal-dot"></div></div>
+        <div class="cal-day has-event">7<div class="cal-dot"></div></div>
+        <div class="cal-day">8</div>
+        <!-- Semana 2 -->
+        <div class="cal-day">9</div><div class="cal-day">10</div><div class="cal-day">11</div>
+        <div class="cal-day">12</div>
+        <div class="cal-day has-event">13<div class="cal-dot"></div></div>
+        <div class="cal-day has-event">14<div class="cal-dot"></div></div>
+        <div class="cal-day">15</div>
+        <!-- Semana 3 -->
+        <div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div>
+        <div class="cal-day">19</div>
+        <div class="cal-day has-event">20<div class="cal-dot"></div></div>
+        <div class="cal-day has-event">21<div class="cal-dot"></div></div>
+        <div class="cal-day">22</div>
+        <!-- Semana 4 -->
+        <div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div>
+        <div class="cal-day">26</div>
+        <div class="cal-day">27</div>
+        <div class="cal-day has-event today">28<div class="cal-dot"></div></div>
+        <div class="cal-day">29</div>
+        <div class="cal-day">30</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px;justify-content:center;margin-top:12px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:var(--txt-2);"><div style="width:10px;height:10px;border-radius:50%;background:var(--gold);"></div>Evento programado</div>
+        <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:var(--txt-2);"><div style="width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:var(--gold-glow-sm);"></div>Evento especial</div>
+      </div>
+    </div>
+
+    <!-- Lista próximos eventos -->
+    <div style="margin-top:52px;">
+      <h3 class="rv" style="font-family:var(--font-display);font-size:18px;color:var(--txt-1);letter-spacing:2px;margin-bottom:24px;text-align:center;">PRÓXIMOS EVENTOS</h3>
+      <div class="upcoming-list">
+        <div class="upcoming-item rv d1">
+          <div class="upcoming-date-box"><div class="udb-day">20</div><div class="udb-month">Jun</div></div>
+          <div class="upcoming-info"><h4>Red &amp; Gold Night</h4><p>Fiesta Temática · Código: Rojo &amp; Dorado · Fotógrafo oficial</p></div>
+          <div class="upcoming-meta">
+            <span class="upcoming-time">10 PM</span>
+            <span class="badge">Fiesta Temática</span>
+            <div class="upcoming-price">S/ 20</div>
+            <a href="reservas.html" class="btn btn-outline btn-sm">Reservar</a>
+          </div>
+        </div>
+        <div class="upcoming-item rv d2">
+          <div class="upcoming-date-box"><div class="udb-day">28</div><div class="udb-month">Jun</div></div>
+          <div class="upcoming-info"><h4>Noche de Aniversario Disco X</h4><p>Evento Especial · DJ Nacional · Open Bar 1ra hora · Show de Luces</p></div>
+          <div class="upcoming-meta">
+            <span class="upcoming-time">10 PM</span>
+            <span class="badge" style="background:rgba(212,175,55,.15);border-color:var(--gold);color:var(--gold);">Evento Especial</span>
+            <div class="upcoming-price">S/ 30</div>
+            <a href="reservas.html" class="btn btn-gold btn-sm">Reservar</a>
+          </div>
+        </div>
+        <div class="upcoming-item rv d3">
+          <div class="upcoming-date-box"><div class="udb-day">5</div><div class="udb-month">Jul</div></div>
+          <div class="upcoming-info"><h4>DJ Invitado Nacional</h4><p>DJ Night Nacional · Lima · Cupos muy limitados</p></div>
+          <div class="upcoming-meta">
+            <span class="upcoming-time">10 PM</span>
+            <span class="badge">DJ Nacional</span>
+            <div class="upcoming-price">S/ 35</div>
+            <a href="reservas.html" class="btn btn-outline btn-sm">Reservar</a>
+          </div>
+        </div>
+        <div class="upcoming-item rv d1">
+          <div class="upcoming-date-box"><div class="udb-day">19</div><div class="udb-month">Jul</div></div>
+          <div class="upcoming-info"><h4>All White Night</h4><p>Fiesta Temática · Código: Blanco total · Ambiente Lounge</p></div>
+          <div class="upcoming-meta">
+            <span class="upcoming-time">10 PM</span>
+            <span class="badge">Fiesta Temática</span>
+            <div class="upcoming-price">S/ 25</div>
+            <a href="reservas.html" class="btn btn-outline btn-sm">Reservar</a>
+          </div>
+        </div>
+        <div class="upcoming-item rv d2">
+          <div class="upcoming-date-box"><div class="udb-day">26</div><div class="udb-month">Jul</div></div>
+          <div class="upcoming-info"><h4>Fiestas Patrias — DJ Especial</h4><p>Celebración Patria · DJ Nacional Sorpresa · Show especial</p></div>
+          <div class="upcoming-meta">
+            <span class="upcoming-time">10 PM</span>
+            <span class="badge">DJ Nacional</span>
+            <div class="upcoming-price">S/ 35</div>
+            <a href="reservas.html" class="btn btn-gold btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INFO GENERAL EVENTOS -->
+<section class="sec sec-dark" id="info">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Lo Que Debes Saber</span>
+      <h2 class="sec-title">Información <span class="g">General</span></h2>
+    </div>
+    <div class="info-grid">
+      <div class="info-card rv d1">
+        <i class="fa-solid fa-door-open"></i>
+        <h4>Horario de Apertura</h4>
+        <p>Jueves y Domingos: 9 PM<br>Viernes y Sábados: 10 PM<br>Eventos especiales: según programación</p>
+      </div>
+      <div class="info-card rv d2">
+        <i class="fa-solid fa-ticket"></i>
+        <h4>Precios de Entrada</h4>
+        <p>General: S/ 15 – S/ 35<br>Varía según el evento<br>VIP: desde S/ 180 (paquetes)</p>
+      </div>
+      <div class="info-card rv d3">
+        <i class="fa-solid fa-id-card"></i>
+        <h4>Requisitos de Ingreso</h4>
+        <p>+18 años obligatorio<br>DNI vigente en puerta<br>Código de vestimenta según noche</p>
+      </div>
+      <div class="info-card rv d1">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h4>Política de Seguridad</h4>
+        <p>Control de ingreso estricto<br>Tolerancia cero a conductas inapropiadas<br>Personal capacitado toda la noche</p>
+      </div>
+      <div class="info-card rv d2">
+        <i class="fa-solid fa-rotate-left"></i>
+        <h4>Política de Reembolso</h4>
+        <p>Cancelación 48h antes: reembolso total<br>Cancelación 24h: 50% reembolso<br>No show: sin reembolso</p>
+      </div>
+      <div class="info-card rv d3">
+        <i class="fa-brands fa-whatsapp"></i>
+        <h4>Reservas e Info</h4>
+        <p>WhatsApp: 901 267 943<br>Disponible de 9 AM a 12 PM<br>Respuesta en menos de 2 horas</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sec" style="padding:70px 0;text-align:center;">
+  <div class="cx rv">
+    <span class="eyebrow" style="justify-content:center;">¿Listo Para la Siguiente Noche?</span>
+    <h2 class="sec-title" style="margin-bottom:14px;">Reserva Tu <span class="g">Entrada Ahora</span></h2>
+    <p class="sec-sub" style="margin-bottom:36px;">Los cupos se agotan rápido. Asegura el tuyo antes que todos.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a href="reservas.html" class="btn btn-gold btn-lg"><i class="fa-solid fa-ticket"></i>Reservar Entrada</a>
+      <a href="vip.html"      class="btn btn-outline btn-lg"><i class="fa-solid fa-crown"></i>Zona VIP</a>
+      <a href="https://wa.me/51901267943" class="btn btn-ghost btn-lg" target="_blank"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-glow"></div>
+  <div class="cx">
+    <div class="ft-main">
+      <div class="ft-brand">
+        <h3>DISCO X</h3>
+        <p>La experiencia nocturna más exclusiva de Huanta. 2 pisos, DJs nacionales, zona VIP y la mejor seguridad.</p>
+        <div class="ft-socials">
+          <a href="#" class="ft-soc"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://wa.me/51901267943" class="ft-soc"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="ft-col"><h4>Navegación</h4><ul>
+        <li><a href="../index.html">Inicio</a></li><li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="eventos.html">Eventos</a></li><li><a href="galeria.html">Galería</a></li>
+        <li><a href="vip.html">Zona VIP</a></li><li><a href="reservas.html">Reservas</a></li>
+      </ul></div>
+      <div class="ft-col"><h4>Eventos</h4><ul>
+        <li><a href="#agenda">Todos los Eventos</a></li><li><a href="#artistas">Artistas</a></li>
+        <li><a href="#calendario">Calendario</a></li><li><a href="reservas.html">Reservar Entrada</a></li>
+        <li><a href="vip.html">Zona VIP</a></li>
+      </ul></div>
+      <div class="ft-col"><h4>Contacto</h4>
+        <p><i class="fa-brands fa-whatsapp" style="color:var(--gold);margin-right:8px;"></i>901 267 943</p>
+        <p><i class="fa-solid fa-clock" style="color:var(--gold);margin-right:8px;"></i>Vie–Dom: 10PM →</p>
+        <p><i class="fa-solid fa-location-dot" style="color:var(--gold);margin-right:8px;"></i>Jr. Lima Cdra. 3, Huanta</p>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <p>© 2025 Disco X · Huanta, Ayacucho · Todos los derechos reservados</p>
+      <p>Diseñado con <span style="color:var(--gold);">♦</span> Agencia Digital Premium</p>
+    </div>
+  </div>
+</footer>
+
+<div class="wa-float">
+  <div class="wa-tip">¿Info del evento? ¡Escríbenos!</div>
+  <a href="https://wa.me/51901267943?text=Hola,%20quiero%20info%20de%20eventos%20en%20Disco%20X" class="wa-btn" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script>
+  // Filtros de eventos
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const f = this.dataset.filter;
+      document.querySelectorAll('.ev-item').forEach(item => {
+        if (f === 'all' || item.dataset.type === f) {
+          item.style.display = '';
+          setTimeout(() => { item.style.opacity = '1'; item.style.transform = ''; }, 10);
+        } else {
+          item.style.opacity = '0';
+          item.style.transform = 'scale(.95)';
+          setTimeout(() => { item.style.display = 'none'; }, 300);
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Galería — Disco X | Fotos y Videos de las Mejores Noches</title>
+  <meta name="description" content="Galería oficial de Disco X Huanta. Fotos y videos de eventos, DJs, zona VIP e instalaciones. La mejor discoteca de Huanta."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/styles.css"/>
+  <style>
+    /* ── PAGE HERO ──────────────────────────────────────────── */
+    .page-hero{min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding-top:76px}
+    .ph-bg{position:absolute;inset:0;background:radial-gradient(ellipse 75% 55% at 50% 50%,rgba(212,175,55,.08) 0%,transparent 65%),linear-gradient(180deg,rgba(3,3,3,.3) 0%,var(--bg-0) 100%)}
+    .ph-img{position:absolute;inset:0;z-index:0}
+    .ph-img img{width:100%;height:100%;object-fit:cover;opacity:.2;filter:saturate(.5)}
+    .ph-content{position:relative;z-index:2}
+    .breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--txt-3);margin-bottom:20px}
+    .breadcrumb a{color:var(--txt-3);transition:color var(--t1)}.breadcrumb a:hover{color:var(--gold)}.breadcrumb span{color:var(--gold)}
+    .ph-title{font-family:var(--font-display);font-size:clamp(42px,7vw,88px);font-weight:900;line-height:.95;text-transform:uppercase;color:var(--txt-1);margin-bottom:14px}
+    .ph-title .g{color:var(--gold);filter:drop-shadow(0 0 24px rgba(212,175,55,.35))}
+    .ph-sub{font-family:var(--font-serif);font-size:clamp(15px,2vw,20px);font-style:italic;color:var(--txt-2);font-weight:300}
+
+    /* ── FILTROS ────────────────────────────────────────────── */
+    .filters{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:44px}
+    .filter-btn{font-family:var(--font-sans);font-size:9.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:10px 22px;border-radius:40px;border:1px solid var(--gold-border);background:transparent;color:var(--txt-2);cursor:none;transition:all var(--t1)}
+    .filter-btn:hover,.filter-btn.active{background:var(--gold);color:var(--bg-0);border-color:var(--gold);box-shadow:var(--gold-glow-sm)}
+
+    /* ── MASONRY GRID ───────────────────────────────────────── */
+    .masonry{
+      columns:4;
+      column-gap:12px;
+    }
+    .masonry-item{
+      break-inside:avoid;
+      margin-bottom:12px;
+      border-radius:10px;
+      overflow:hidden;
+      position:relative;
+      cursor:zoom-in;
+      border:1px solid transparent;
+      display:block;
+      transition:border-color var(--t1),transform var(--t2) var(--ease);
+    }
+    .masonry-item:hover{border-color:rgba(212,175,55,.38);transform:scale(.98)}
+    .masonry-item img{width:100%;display:block;object-fit:cover;filter:brightness(.72) saturate(.85);transition:transform var(--t3),filter var(--t2)}
+    .masonry-item:hover img{transform:scale(1.05);filter:brightness(.9) saturate(1.1)}
+    .masonry-ov{position:absolute;inset:0;background:rgba(212,175,55,.06);opacity:0;transition:opacity var(--t2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+    .masonry-item:hover .masonry-ov{opacity:1}
+    .masonry-ov i{font-size:28px;color:var(--gold)}
+    .masonry-ov span{font-family:var(--font-sans);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+    .masonry-cat{position:absolute;top:10px;left:10px;font-size:7.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;background:rgba(3,3,3,.75);border:1px solid var(--gold-border);color:var(--gold);padding:3px 9px;border-radius:3px;backdrop-filter:blur(6px)}
+
+    /* ── LIGHTBOX ───────────────────────────────────────────── */
+    #lightbox{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.94);backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;padding:20px}
+    #lightbox.open{display:flex}
+    #lightbox-img{max-width:90vw;max-height:88vh;border-radius:10px;border:1px solid var(--gold-border);box-shadow:0 0 60px rgba(0,0,0,.8);object-fit:contain}
+    #lightbox-close{position:absolute;top:20px;right:24px;font-size:28px;color:var(--txt-2);cursor:none;transition:color var(--t1);z-index:2;background:none;border:none}
+    #lightbox-close:hover{color:var(--gold)}
+    #lightbox-prev,#lightbox-next{position:absolute;top:50%;transform:translateY(-50%);font-size:22px;color:var(--txt-2);cursor:none;background:rgba(212,175,55,.08);border:1px solid var(--gold-border);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;transition:all var(--t1);z-index:2}
+    #lightbox-prev{left:20px}
+    #lightbox-next{right:20px}
+    #lightbox-prev:hover,#lightbox-next:hover{background:var(--gold);color:var(--bg-0)}
+    #lightbox-caption{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(3,3,3,.75);border:1px solid var(--gold-border);backdrop-filter:blur(10px);padding:8px 20px;border-radius:6px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--txt-2);white-space:nowrap}
+    #lightbox-counter{position:absolute;top:20px;left:24px;font-size:11px;color:var(--txt-3);letter-spacing:2px}
+
+    /* ── VIDEO GRID ─────────────────────────────────────────── */
+    .video-masonry{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .vid-card{border-radius:var(--r-card);overflow:hidden;border:1px solid var(--gold-border);background:var(--bg-2);transition:transform var(--t2) var(--ease),box-shadow var(--t2)}
+    .vid-card:hover{transform:translateY(-6px);box-shadow:0 10px 36px rgba(0,0,0,.45)}
+    .vid-frame{aspect-ratio:16/9;position:relative}
+    .vid-frame iframe{width:100%;height:100%;border:none}
+    .vid-body{padding:16px 18px}
+    .vid-body h4{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--txt-1);margin-bottom:4px;letter-spacing:.5px}
+    .vid-body p{font-size:11.5px;color:var(--txt-2)}
+
+    /* ── STATS GALERÍA ──────────────────────────────────────── */
+    .gal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:52px}
+    .gs-item{padding:24px;border-radius:var(--r-card);background:var(--bg-2);border:1px solid var(--gold-border);text-align:center}
+    .gs-n{font-family:var(--font-display);font-size:36px;font-weight:900;color:var(--gold);line-height:1;filter:drop-shadow(0 0 8px rgba(212,175,55,.25))}
+    .gs-l{font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--txt-2);margin-top:6px;display:block}
+
+    /* ── REELS/SHORTS ───────────────────────────────────────── */
+    .reels-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+    .reel-item{border-radius:10px;overflow:hidden;aspect-ratio:9/16;position:relative;border:1px solid var(--gold-border);cursor:pointer;transition:transform var(--t2) var(--ease),box-shadow var(--t2)}
+    .reel-item:hover{transform:scale(1.03);box-shadow:0 8px 28px rgba(0,0,0,.45),0 0 18px rgba(212,175,55,.1)}
+    .reel-item img{width:100%;height:100%;object-fit:cover;filter:brightness(.65);transition:filter var(--t3)}
+    .reel-item:hover img{filter:brightness(.85)}
+    .reel-ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(3,3,3,.25)}
+    .reel-play{width:46px;height:46px;border-radius:50%;background:rgba(212,175,55,.85);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--bg-0);transition:transform var(--t1),background var(--t1)}
+    .reel-item:hover .reel-play{transform:scale(1.15);background:var(--gold)}
+    .reel-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.75)}
+
+    /* ── BEHIND THE SCENES ──────────────────────────────────── */
+    .bts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .bts-item{border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--gold-border);transition:transform var(--t2),box-shadow var(--t2)}
+    .bts-item:hover{transform:translateY(-5px);box-shadow:0 8px 28px rgba(0,0,0,.4)}
+    .bts-item img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(.68) saturate(.8);transition:filter var(--t3)}
+    .bts-item:hover img{filter:brightness(.88) saturate(1)}
+    .bts-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(3,3,3,.88) 0%,transparent 100%);padding:18px 16px 14px}
+    .bts-overlay h4{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--txt-1);margin-bottom:2px}
+    .bts-overlay p{font-size:10.5px;color:var(--txt-2)}
+
+    /* Responsive */
+    @media(max-width:1200px){.masonry{columns:3}.reels-grid{grid-template-columns:repeat(4,1fr)}}
+    @media(max-width:1024px){.video-masonry{grid-template-columns:1fr 1fr}.gal-stats{grid-template-columns:1fr 1fr}.bts-grid{grid-template-columns:1fr 1fr}.reels-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:768px){.masonry{columns:2}.video-masonry{grid-template-columns:1fr}.reels-grid{grid-template-columns:repeat(2,1fr)}.bts-grid{grid-template-columns:1fr}}
+    @media(max-width:480px){.masonry{columns:1}.gal-stats{grid-template-columns:1fr 1fr}.reels-grid{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+
+<div id="cx-dot"></div>
+<div id="cx-ring"></div>
+<div id="sp-bar"></div>
+<div id="noise"></div>
+<canvas id="px-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35"></canvas>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button id="lightbox-close"><i class="fa-solid fa-xmark"></i></button>
+  <button id="lightbox-prev"><i class="fa-solid fa-chevron-left"></i></button>
+  <img id="lightbox-img" src="" alt=""/>
+  <button id="lightbox-next"><i class="fa-solid fa-chevron-right"></i></button>
+  <div id="lightbox-caption"></div>
+  <div id="lightbox-counter"></div>
+</div>
+
+<!-- AGE GATE -->
+<div id="age-gate">
+  <div class="ag-logo">X</div>
+  <h2>Verificación de Edad</h2>
+  <p>Disco X es un espacio exclusivo para mayores de 18 años.</p>
+  <div class="ag-btns">
+    <button id="ag-yes" class="btn btn-gold btn-lg">Tengo 18 o más</button>
+    <button id="ag-no" class="btn btn-outline">Soy menor de edad</button>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="nav on" role="navigation">
+  <div class="nav-in">
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-emblem"><span>X</span></div>
+      <div><span class="nav-name">Disco X</span><span class="nav-sub">Huanta · Premium</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">Inicio</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="eventos.html">Eventos</a>
+      <a href="galeria.html" class="active">Galería</a>
+      <a href="vip.html">VIP</a>
+      <a href="reservas.html" class="nav-cta">Reservar Mesa</a>
+    </div>
+    <button class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-menu">
+  <a href="../index.html">Inicio</a>
+  <a href="nosotros.html">Nosotros</a>
+  <a href="eventos.html">Eventos</a>
+  <a href="galeria.html">Galería</a>
+  <a href="vip.html">VIP</a>
+  <a href="reservas.html">Reservas</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="ph-img">
+    <img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=1400&q=80" alt="Galería Disco X"/>
+  </div>
+  <div class="ph-bg"></div>
+  <div class="hc hc-tl" style="position:absolute;top:28px;left:28px;"></div>
+  <div class="hc hc-tr" style="position:absolute;top:28px;right:28px;"></div>
+  <div class="ph-content">
+    <div class="breadcrumb">
+      <a href="../index.html">Inicio</a>
+      <i class="fa-solid fa-chevron-right" style="font-size:7px;"></i>
+      <span>Galería</span>
+    </div>
+    <h1 class="ph-title">Nuestra <span class="g">Galería</span></h1>
+    <p class="ph-sub">Momentos únicos que solo existen en Disco X Huanta</p>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" style="position:relative;z-index:2;">
+  <div class="ticker-track">
+    <span class="ticker-item"><i class="fa-solid fa-camera"></i>FOTOS Y VIDEOS DE NUESTRAS MEJORES NOCHES</span>
+    <span class="ticker-item"><i class="fa-solid fa-images"></i>GALERÍA ACTUALIZADA CADA FIN DE SEMANA</span>
+    <span class="ticker-item"><i class="fa-brands fa-instagram"></i>SÍGUENOS EN INSTAGRAM PARA MÁS CONTENIDO</span>
+    <span class="ticker-item"><i class="fa-solid fa-champagne-glasses"></i>RESERVA: 901 267 943</span>
+    <span class="ticker-item"><i class="fa-solid fa-camera"></i>FOTOS Y VIDEOS DE NUESTRAS MEJORES NOCHES</span>
+    <span class="ticker-item"><i class="fa-solid fa-images"></i>GALERÍA ACTUALIZADA CADA FIN DE SEMANA</span>
+    <span class="ticker-item"><i class="fa-brands fa-instagram"></i>SÍGUENOS EN INSTAGRAM PARA MÁS CONTENIDO</span>
+    <span class="ticker-item"><i class="fa-solid fa-champagne-glasses"></i>RESERVA: 901 267 943</span>
+  </div>
+</div>
+
+<!-- STATS GALERÍA -->
+<section class="sec" style="padding:52px 0;">
+  <div class="cx">
+    <div class="gal-stats">
+      <div class="gs-item rv d1">
+        <div class="gs-n"><span data-count="500">0</span>+</div>
+        <span class="gs-l">Fotos en galería</span>
+      </div>
+      <div class="gs-item rv d2">
+        <div class="gs-n"><span data-count="80">0</span>+</div>
+        <span class="gs-l">Videos publicados</span>
+      </div>
+      <div class="gs-item rv d3">
+        <div class="gs-n"><span data-count="150">0</span>+</div>
+        <span class="gs-l">Eventos fotografiados</span>
+      </div>
+      <div class="gs-item rv d4">
+        <div class="gs-n"><span data-count="48">0</span>k+</div>
+        <span class="gs-l">Seguidores en redes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERÍA FOTOS — MASONRY -->
+<section class="sec sec-dark" id="fotos">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Momentos Capturados</span>
+      <h2 class="sec-title">Galería de <span class="g">Fotografías</span></h2>
+      <p class="sec-sub">Cada imagen es un recuerdo de una noche inolvidable en Disco X</p>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters rv">
+      <button class="filter-btn active" data-filter="all">Todas</button>
+      <button class="filter-btn" data-filter="eventos">Eventos</button>
+      <button class="filter-btn" data-filter="vip">Zona VIP</button>
+      <button class="filter-btn" data-filter="djs">DJs</button>
+      <button class="filter-btn" data-filter="instalaciones">Instalaciones</button>
+      <button class="filter-btn" data-filter="clientes">Clientes</button>
+    </div>
+
+    <!-- Masonry Grid -->
+    <div class="masonry" id="photo-grid">
+
+      <div class="masonry-item" data-cat="eventos" data-src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80" data-caption="Noche de Aniversario 2024">
+        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80" alt="Aniversario Disco X" loading="lazy"/>
+        <span class="masonry-cat">Eventos</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="vip" data-src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=800&q=80" data-caption="Zona VIP — 2do Piso">
+        <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=600&q=80" alt="VIP Disco X" loading="lazy"/>
+        <span class="masonry-cat">Zona VIP</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="djs" data-src="https://images.unsplash.com/photo-1471478331149-c72f17e33c73?w=800&q=80" data-caption="DJ Shadow X en los platos">
+        <img src="https://images.unsplash.com/photo-1471478331149-c72f17e33c73?w=600&q=80" alt="DJ Disco X" loading="lazy"/>
+        <span class="masonry-cat">DJs</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="instalaciones" data-src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800&q=80" data-caption="Pista principal — 1er Piso">
+        <img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=600&q=80" alt="Pista Disco X" loading="lazy"/>
+        <span class="masonry-cat">Instalaciones</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="clientes" data-src="https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?w=800&q=80" data-caption="Clientes disfrutando la noche">
+        <img src="https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?w=600&q=80" alt="Clientes Disco X" loading="lazy"/>
+        <span class="masonry-cat">Clientes</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="eventos" data-src="https://images.unsplash.com/photo-1429514513361-8fa32282fd5f?w=800&q=80" data-caption="Red & Gold Night 2024">
+        <img src="https://images.unsplash.com/photo-1429514513361-8fa32282fd5f?w=600&q=80" alt="Evento temático" loading="lazy"/>
+        <span class="masonry-cat">Eventos</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="djs" data-src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80" data-caption="Show de luces + DJ en vivo">
+        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80" alt="DJ y luces" loading="lazy"/>
+        <span class="masonry-cat">DJs</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="vip" data-src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80" data-caption="Ambiente VIP exclusivo">
+        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80" alt="VIP ambiance" loading="lazy"/>
+        <span class="masonry-cat">Zona VIP</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="clientes" data-src="https://images.unsplash.com/photo-1496024840928-4c417adf211d?w=800&q=80" data-caption="La mejor energía de Huanta">
+        <img src="https://images.unsplash.com/photo-1496024840928-4c417adf211d?w=600&q=80" alt="Ambiente nocturno" loading="lazy"/>
+        <span class="masonry-cat">Clientes</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="instalaciones" data-src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=800&q=80" data-caption="Barra principal — Disco X">
+        <img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=600&q=80" alt="Barra Disco X" loading="lazy"/>
+        <span class="masonry-cat">Instalaciones</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="eventos" data-src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800&q=80" data-caption="DJ Nacional en Disco X">
+        <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=600&q=80" alt="Concierto Disco X" loading="lazy"/>
+        <span class="masonry-cat">Eventos</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="clientes" data-src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800&q=80" data-caption="Cumpleaños VIP Disco X">
+        <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=600&q=80" alt="Cumpleaños VIP" loading="lazy"/>
+        <span class="masonry-cat">Clientes</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="djs" data-src="https://images.unsplash.com/photo-1571266028243-e8a7270ed42c?w=800&q=80" data-caption="DJ Kross en Disco X">
+        <img src="https://images.unsplash.com/photo-1571266028243-e8a7270ed42c?w=600&q=80" alt="DJ Kross" loading="lazy"/>
+        <span class="masonry-cat">DJs</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="instalaciones" data-src="https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=800&q=80" data-caption="Show de luces — Disco X">
+        <img src="https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=600&q=80" alt="Luces Disco X" loading="lazy"/>
+        <span class="masonry-cat">Instalaciones</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="vip" data-src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" data-caption="Mesa VIP reservada">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Mesa VIP" loading="lazy"/>
+        <span class="masonry-cat">Zona VIP</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+      <div class="masonry-item" data-cat="eventos" data-src="https://images.unsplash.com/photo-1598387180432-5d6e7c0b5a80?w=800&q=80" data-caption="All White Night — Disco X">
+        <img src="https://images.unsplash.com/photo-1598387180432-5d6e7c0b5a80?w=600&q=80" alt="White Night" loading="lazy"/>
+        <span class="masonry-cat">Eventos</span>
+        <div class="masonry-ov"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Ver foto</span></div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:40px;" class="rv">
+      <p style="font-size:11px;color:var(--txt-3);letter-spacing:1px;margin-bottom:16px;">Galería actualizada cada fin de semana. Síguenos en redes para ver el contenido más reciente.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="#" class="btn btn-gold"><i class="fa-brands fa-instagram"></i>Instagram</a>
+        <a href="#" class="btn btn-outline"><i class="fa-brands fa-tiktok"></i>TikTok</a>
+        <a href="#" class="btn btn-ghost"><i class="fa-brands fa-facebook-f"></i>Facebook</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REELS / SHORTS -->
+<section class="sec sec-darker" id="reels">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Contenido Vertical</span>
+      <h2 class="sec-title">Reels &amp; <span class="g">Shorts</span></h2>
+      <p class="sec-sub">Los momentos más virales de Disco X en formato vertical</p>
+    </div>
+    <div class="reels-grid">
+      <div class="reel-item rv d1">
+        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=300&q=80" alt="Reel 1" loading="lazy"/>
+        <div class="reel-ov">
+          <div class="reel-play"><i class="fa-solid fa-play" style="margin-left:3px;"></i></div>
+          <span class="reel-label">Aniversario</span>
+        </div>
+      </div>
+      <div class="reel-item rv d2">
+        <img src="https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?w=300&q=80" alt="Reel 2" loading="lazy"/>
+        <div class="reel-ov">
+          <div class="reel-play"><i class="fa-solid fa-play" style="margin-left:3px;"></i></div>
+          <span class="reel-label">Pista Principal</span>
+        </div>
+      </div>
+      <div class="reel-item rv d3">
+        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=300&q=80" alt="Reel 3" loading="lazy"/>
+        <div class="reel-ov">
+          <div class="reel-play"><i class="fa-solid fa-play" style="margin-left:3px;"></i></div>
+          <span class="reel-label">DJ en Vivo</span>
+        </div>
+      </div>
+      <div class="reel-item rv d4">
+        <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=300&q=80" alt="Reel 4" loading="lazy"/>
+        <div class="reel-ov">
+          <div class="reel-play"><i class="fa-solid fa-play" style="margin-left:3px;"></i></div>
+          <span class="reel-label">Zona VIP</span>
+        </div>
+      </div>
+      <div class="reel-item rv d5">
+        <img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=300&q=80" alt="Reel 5" loading="lazy"/>
+        <div class="reel-ov">
+          <div class="reel-play"><i class="fa-solid fa-play" style="margin-left:3px;"></i></div>
+          <span class="reel-label">Show de Luces</span>
+        </div>
+      </div>
+    </div>
+    <p class="rv" style="text-align:center;font-size:11px;color:var(--txt-3);margin-top:20px;letter-spacing:1px;">* Reels disponibles en nuestro Instagram y TikTok oficial</p>
+  </div>
+</section>
+
+<!-- VIDEOS YOUTUBE -->
+<section class="sec" id="videos">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">En YouTube</span>
+      <h2 class="sec-title">Videos de <span class="g">Nuestras Noches</span></h2>
+      <p class="sec-sub">Revive los mejores momentos en video completo</p>
+    </div>
+    <div class="video-masonry">
+      <div class="vid-card rv d1">
+        <div class="vid-frame">
+          <!-- Reemplaza con IDs de YouTube reales -->
+          <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&rel=0&modestbranding=1" title="Video Disco X" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="vid-body">
+          <h4>Noche de Aniversario 2024</h4>
+          <p>El evento más grande del año en toda su plenitud. Video oficial.</p>
+        </div>
+      </div>
+      <div class="vid-card rv d2">
+        <div class="vid-frame">
+          <iframe src="https://www.youtube.com/embed/kffacxfA7G4?controls=1&rel=0&modestbranding=1" title="DJ en Disco X" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="vid-body">
+          <h4>DJ Shadow X — Set Completo</h4>
+          <p>El set más épico de DJ Shadow X desde el escenario de Disco X.</p>
+        </div>
+      </div>
+      <div class="vid-card rv d3">
+        <div class="vid-frame">
+          <iframe src="https://www.youtube.com/embed/3tmd-ClpJxA?controls=1&rel=0&modestbranding=1" title="VIP Disco X" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="vid-body">
+          <h4>Tour Zona VIP — 2do Piso</h4>
+          <p>Conoce por dentro la zona más exclusiva de Huanta. Tour completo.</p>
+        </div>
+      </div>
+      <div class="vid-card rv d1">
+        <div class="vid-frame">
+          <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&rel=0&modestbranding=1&start=30" title="Red Gold Night" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="vid-body">
+          <h4>Red &amp; Gold Night — Highlights</h4>
+          <p>Los mejores momentos de la noche temática más elegante del año.</p>
+        </div>
+      </div>
+      <div class="vid-card rv d2">
+        <div class="vid-frame">
+          <iframe src="https://www.youtube.com/embed/kffacxfA7G4?controls=1&rel=0&modestbranding=1&start=45" title="Show de luces" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="vid-body">
+          <h4>Show de Luces — Tecnología Premium</h4>
+          <p>Nuestro sistema de iluminación inteligente en plena acción. Increíble.</p>
+        </div>
+      </div>
+      <div class="vid-card rv d3">
+        <div class="vid-frame">
+          <iframe src="https://www.youtube.com/embed/3tmd-ClpJxA?controls=1&rel=0&modestbranding=1&start=15" title="Cumpleaños VIP" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="vid-body">
+          <h4>Celebración de Cumpleaños VIP</h4>
+          <p>Así celebramos los cumpleaños en Disco X. Una experiencia única.</p>
+        </div>
+      </div>
+    </div>
+    <p class="rv" style="text-align:center;font-size:11px;color:var(--txt-3);margin-top:20px;letter-spacing:1px;">* Reemplaza los IDs de YouTube con los videos reales del canal de Disco X.</p>
+  </div>
+</section>
+
+<!-- BEHIND THE SCENES -->
+<section class="sec sec-dark" id="bts">
+  <div class="cx">
+    <div class="sec-hd rv" style="text-align:center;">
+      <span class="eyebrow">Detrás del Escenario</span>
+      <h2 class="sec-title">Behind the <span class="g">Scenes</span></h2>
+      <p class="sec-sub">Lo que pasa antes de que empiece la noche más increíble de Huanta</p>
+    </div>
+    <div class="bts-grid">
+      <div class="bts-item rv d1">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80" alt="Preparación del escenario" loading="lazy"/>
+        <div class="bts-overlay"><h4>Setup del Escenario</h4><p>Preparación de equipos de sonido e iluminación</p></div>
+      </div>
+      <div class="bts-item rv d2">
+        <img src="https://images.unsplash.com/photo-1484665754804-74b091211472?w=600&q=80" alt="Soundcheck DJ" loading="lazy"/>
+        <div class="bts-overlay"><h4>Soundcheck</h4><p>DJ verificando los niveles antes del show</p></div>
+      </div>
+      <div class="bts-item rv d3">
+        <img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=600&q=80" alt="Preparación barra" loading="lazy"/>
+        <div class="bts-overlay"><h4>Barra Lista</h4><p>El equipo de bartenders preparando la noche</p></div>
+      </div>
+      <div class="bts-item rv d1">
+        <img src="https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=600&q=80" alt="Programación de luces" loading="lazy"/>
+        <div class="bts-overlay"><h4>Programación de Luces</h4><p>200+ fixtures sincronizados para el show</p></div>
+      </div>
+      <div class="bts-item rv d2">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Decoración VIP" loading="lazy"/>
+        <div class="bts-overlay"><h4>Decoración VIP</h4><p>Preparando el 2do piso para los clientes premium</p></div>
+      </div>
+      <div class="bts-item rv d3">
+        <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=600&q=80" alt="Equipo de seguridad" loading="lazy"/>
+        <div class="bts-overlay"><h4>Briefing de Seguridad</h4><p>El equipo se prepara para garantizar tu tranquilidad</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA REDES + RESERVA -->
+<section class="sec" style="padding:70px 0;text-align:center;">
+  <div class="cx rv">
+    <span class="eyebrow" style="justify-content:center;">¿Te Gustó lo que Viste?</span>
+    <h2 class="sec-title" style="margin-bottom:14px;">Vive la <span class="g">Experiencia en Persona</span></h2>
+    <p class="sec-sub" style="margin-bottom:36px;">Las fotos no hacen justicia. Ven y vívelo tú mismo.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a href="reservas.html" class="btn btn-gold btn-lg"><i class="fa-solid fa-champagne-glasses"></i>Reservar Mesa</a>
+      <a href="vip.html"      class="btn btn-outline btn-lg"><i class="fa-solid fa-crown"></i>Zona VIP</a>
+      <a href="https://wa.me/51901267943" class="btn btn-ghost btn-lg" target="_blank"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px;">
+      <a href="#" class="btn btn-ghost btn-sm"><i class="fa-brands fa-instagram"></i>Instagram</a>
+      <a href="#" class="btn btn-ghost btn-sm"><i class="fa-brands fa-tiktok"></i>TikTok</a>
+      <a href="#" class="btn btn-ghost btn-sm"><i class="fa-brands fa-youtube"></i>YouTube</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-glow"></div>
+  <div class="cx">
+    <div class="ft-main">
+      <div class="ft-brand">
+        <h3>DISCO X</h3>
+        <p>La experiencia nocturna más exclusiva de Huanta. 2 pisos, DJs nacionales, zona VIP y la mejor seguridad.</p>
+        <div class="ft-socials">
+          <a href="#" class="ft-soc"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="ft-soc"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://wa.me/51901267943" class="ft-soc"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="ft-col"><h4>Navegación</h4><ul>
+        <li><a href="../index.html">Inicio</a></li><li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="eventos.html">Eventos</a></li><li><a href="galeria.html">Galería</a></li>
+        <li><a href="vip.html">Zona VIP</a></li><li><a href="reservas.html">Reservas</a></li>
+      </ul></div>
+      <div class="ft-col"><h4>Galería</h4><ul>
+        <li><a href="#fotos">Fotografías</a></li><li><a href="#videos">Videos</a></li>
+        <li><a href="#reels">Reels</a></li><li><a href="#bts">Behind the Scenes</a></li>
+      </ul></div>
+      <div class="ft-col"><h4>Contacto</h4>
+        <p><i class="fa-brands fa-whatsapp" style="color:var(--gold);margin-right:8px;"></i>901 267 943</p>
+        <p><i class="fa-solid fa-clock" style="color:var(--gold);margin-right:8px;"></i>Vie–Dom: 10PM →</p>
+        <p><i class="fa-solid fa-location-dot" style="color:var(--gold);margin-right:8px;"></i>Jr. Lima Cdra. 3, Huanta</p>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <p>© 2025 Disco X · Huanta, Ayacucho · Todos los derechos reservados</p>
+      <p>Diseñado con <span style="color:var(--gold);">♦</span> Agencia Digital Premium</p>
+    </div>
+  </div>
+</footer>
+
+<div class="wa-float">
+  <div class="wa-tip">¿Reservas? ¡Escríbenos! 🎉</div>
+  <a href="https://wa.me/51901267943?text=Hola,%20quiero%20reservar%20en%20Disco%20X" class="wa-btn" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script>
+/* ── LIGHTBOX ──────────────────────────────────────────────── */
+const lb     = document.getElementById('lightbox');
+const lbImg  = document.getElementById('lightbox-img');
+const lbCap  = document.getElementById('lightbox-caption');
+const lbCnt  = document.getElementById('lightbox-counter');
+let items = [], cur = 0;
+
+function buildItems() {
+  items = [...document.querySelectorAll('.masonry-item[data-src]')];
+}
+function openLb(idx) {
+  cur = idx;
+  lbImg.src = items[cur].dataset.src;
+  lbCap.textContent = items[cur].dataset.caption || '';
+  lbCnt.textContent = `${cur+1} / ${items.length}`;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; lbImg.src = ''; }
+function prevImg() { cur = (cur - 1 + items.length) % items.length; openLb(cur); }
+function nextImg() { cur = (cur + 1) % items.length; openLb(cur); }
+
+buildItems();
+items.forEach((item, i) => item.addEventListener('click', () => openLb(i)));
+document.getElementById('lightbox-close').addEventListener('click', closeLb);
+document.getElementById('lightbox-prev').addEventListener('click', prevImg);
+document.getElementById('lightbox-next').addEventListener('click', nextImg);
+lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLb();
+  if (e.key === 'ArrowLeft') prevImg();
+  if (e.key === 'ArrowRight') nextImg();
+});
+
+/* ── FILTROS MASONRY ───────────────────────────────────────── */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const f = this.dataset.filter;
+    document.querySelectorAll('.masonry-item').forEach(item => {
+      const show = f === 'all' || item.dataset.cat === f;
+      item.style.transition = 'opacity .3s, transform .3s';
+      if (show) { item.style.opacity = '1'; item.style.transform = ''; item.style.display = 'block'; }
+      else { item.style.opacity = '0'; item.style.transform = 'scale(.95)'; setTimeout(() => { if (this.dataset.filter !== 'all' && item.dataset.cat !== this.dataset.filter) item.style.display = 'none'; }, 300); }
+    });
+    buildItems();
+  });
+});
+
+/* ── REELS (placeholder click) ─────────────────────────────── */
+document.querySelectorAll('.reel-item').forEach(r => {
+  r.addEventListener('click', () => {
+    DX.toast('Abre nuestro Instagram o TikTok para ver los Reels completos 🎬', 'info');
+  });
+});
+</script>
+</body>
+</html>
